@@ -1,0 +1,31 @@
+Source: bitcoin
+Section: network
+Priority: extra
+Maintainer: Mario Oyorzabal Salgado <tuxsoul@tuxsoul.com>
+Build-Depends: debhelper (>= 5)
+Standards-Version: 3.7.2
+
+Package: bitcoin
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, libssl-dev, libdb-dev, libglib2.0-dev
+Description: peer-to-peer network based anonymous digital currency
+ Bitcoin is a free open source peer-to-peer electronic cash
+ system that is completely decentralized, without the need
+ for a central server or trusted parties.  Users hold the
+ crypto keys to their own money and transact directly with
+ each other, with the help of a P2P network to check for
+ double-spending.
+
+Package: bitcoind
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, libssl-dev, libdb-dev, libglib2.0-dev
+Description: peer-to-peer network based anonymous digital currency
+ Bitcoin is a free open source peer-to-peer electronic cash
+ system that is completely decentralized, without the need
+ for a central server or trusted parties.  Users hold the
+ crypto keys to their own money and transact directly with
+ each other, with the help of a P2P network to check for
+ double-spending.
+ .
+ This package install the bitcoin daemon.
+

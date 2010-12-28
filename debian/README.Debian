@@ -1,0 +1,9 @@
+bitcoin for Debian
+------------------
+
+     * In this time, only the bitcoin daemon (bitcoind) is packaged.
+     * In the debian repository, not exist wxWidget v2.9, to compile bitcoin
+       with gui.
+
+ -- Mario Oyorzabal Salgado <tuxsoul@tuxsoul.com>  Thu,  2 Dec 2010 05:28:40 -0600
+
