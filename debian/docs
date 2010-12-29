@@ -1,5 +1,3 @@
-license.txt
-readme.txt
-src/build-msw.txt
-src/build-osx.txt
-src/build-unix.txt
+build-msw.txt
+build-osx.txt
+build-unix.txt
