@@ -1,24 +1,19 @@
 Source: bitcoin
-Section: network
-Priority: extra
+Section: net
+Priority: optional
 Maintainer: Mario Oyorzabal Salgado <tuxsoul@tuxsoul.com>
-Build-Depends: debhelper (>= 5)
+Build-Depends: debhelper (>= 5),
+ libgtk2.0-dev,
+ libssl-dev,
+ libdb4.7-dev | libdb4.8-dev,
+ libdb4.7++-dev | libdb4.8++-dev,
+ libboost-all-dev | libboost1.40-all-dev,
 Standards-Version: 3.7.2
-
-Package: bitcoin
-Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, libssl-dev, libdb-dev, libglib2.0-dev
-Description: peer-to-peer network based anonymous digital currency
- Bitcoin is a free open source peer-to-peer electronic cash
- system that is completely decentralized, without the need
- for a central server or trusted parties.  Users hold the
- crypto keys to their own money and transact directly with
- each other, with the help of a P2P network to check for
- double-spending.
+Homepage: http://www.bitcoin.org
 
 Package: bitcoind
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, libssl-dev, libdb-dev, libglib2.0-dev
+Depends: ${shlibs:Depends}, ${misc:Depends},
 Description: peer-to-peer network based anonymous digital currency
  Bitcoin is a free open source peer-to-peer electronic cash
  system that is completely decentralized, without the need
@@ -28,4 +23,7 @@ Description: peer-to-peer network based anonymous digital currency
  double-spending.
  .
  This package install the bitcoin daemon.
-
+ .
+ Include the next docs:
+  * White paper about bitcoin: "bitcoin.pdf".
+  * Example: "bitcoin.conf".
