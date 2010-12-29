@@ -9,6 +9,8 @@ Build-Depends: debhelper (>= 5),
  libdb4.7++-dev | libdb4.8++-dev,
  libboost-all-dev | libboost1.40-all-dev,
 Standards-Version: 3.7.2
+Vcs-Svn: https://bitcoin.svn.sourceforge.net/svnroot/bitcoin
+Vcs-Browser: http://bitcoin.svn.sourceforge.net/viewvc/bitcoin/trunk/
 Homepage: http://www.bitcoin.org
 
 Package: bitcoind
