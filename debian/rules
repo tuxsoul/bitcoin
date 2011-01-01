@@ -24,7 +24,7 @@ configure: configure-stamp
 configure-stamp:
 	dh_testdir
 	# Add here commands to configure the package.
-
+	# This package not need configure
 	touch configure-stamp
 
 
@@ -34,7 +34,7 @@ build-stamp: configure-stamp
 	dh_testdir
 
 	# Add here commands to compile the package.
-	$(MAKE)
+	$(MAKE) -f makefile.unix bitcoind
 	#docbook-to-man debian/bitcoin.sgml > bitcoin.1
 
 	touch $@
@@ -45,7 +45,7 @@ clean:
 	rm -f build-stamp configure-stamp
 
 	# Add here commands to clean up after the build process.
-	-$(MAKE) clean
+	[ ! -f makefile.unix ] || $(MAKE) -f makefile.unix clean
 
 	dh_clean 
 
@@ -56,7 +56,7 @@ install: build
 	dh_installdirs
 
 	# Add here commands to install the package into debian/bitcoin.
-	$(MAKE) DESTDIR=$(CURDIR)/debian/bitcoin install
+	#$(MAKE) DESTDIR=$(CURDIR)/debian/bitcoind install
 
 
 # Build architecture-independent files here.
@@ -67,10 +67,10 @@ binary-indep: build install
 binary-arch: build install
 	dh_testdir
 	dh_testroot
-#	dh_installchangelogs 
+	dh_installchangelogs debian/Changelog.1
 	dh_installdocs
-#	dh_installexamples
-#	dh_install
+	dh_installexamples debian/examples/*
+	dh_install
 #	dh_installmenu
 #	dh_installdebconf	
 #	dh_installlogrotate
@@ -96,4 +96,3 @@ binary-arch: build install
 
 binary: binary-indep binary-arch
 .PHONY: build clean binary-indep binary-arch binary install configure
-

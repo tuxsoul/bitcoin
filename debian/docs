@@ -1,3 +1,4 @@
 build-msw.txt
 build-osx.txt
 build-unix.txt
+debian/bitcoin.pdf
