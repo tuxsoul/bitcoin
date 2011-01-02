@@ -37,6 +37,17 @@ build-stamp: configure-stamp
 	$(MAKE) -f makefile.unix bitcoind
 	#docbook-to-man debian/bitcoin.sgml > bitcoin.1
 
+	# build bitcoind(1) manpage
+	asciidoc -b docbook -d manpage -o debian/manpages/bitcoind.xml \
+		debian/manpages/bitcoind.txt
+	xmlto -o debian/manpages/ man debian/manpages/bitcoind.xml
+
+	# build bitcoin.conf(5) manpage
+	asciidoc -b docbook -d manpage -o debian/manpages/bitcoin.conf.xml \
+		debian/manpages/bitcoin.conf.txt
+	xmlto -o debian/manpages/ man debian/manpages/bitcoin.conf.xml
+
+
 	touch $@
 
 clean:
@@ -46,6 +57,10 @@ clean:
 
 	# Add here commands to clean up after the build process.
 	[ ! -f makefile.unix ] || $(MAKE) -f makefile.unix clean
+
+	# remove manpages (not source txt files)
+	rm -f debian/manpages/bitcoind.{1,xml}
+	rm -f debian/manpages/bitcoin.conf.{5,xml}
 
 	dh_clean 
 
@@ -81,7 +96,7 @@ binary-arch: build install
 #	dh_installinit
 #	dh_installcron
 #	dh_installinfo
-#	dh_installman
+	dh_installman
 	dh_link
 	dh_strip
 	dh_compress
