@@ -1,1 +1,6 @@
 .pc
+bitcoind
+cryptopp/obj/
+debian/manpages/*
+!debian/manpages/*.txt
+obj/
