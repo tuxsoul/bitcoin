@@ -1,0 +1,481 @@
+bitcoind(1)
+===========
+
+
+NAME
+----
+bitcoind - peer-to-peer network based anonymous digital currency
+
+
+SYNOPSIS
+--------
+----
+bitcoind [options]
+bitcoind [options] <command> [params]
+bitcoind [options] help
+bitcoind [options] help <command>
+----
+
+DESCRIPTION
+-----------
+Running *bitcoin* with the '-server' argument (or running *bitcoind(1)*) tells
+it to function as a HTTP JSON-RPC server, you can control it via the
+command-line or by HTTP-JSON-RPC commands, but HTTP Basic access authentication
+must be used when communicating with it, and, for security, by default, the
+server only accepts connections from other processes on the same machine. If
+your HTTP or JSON library requires you to specify which 'realm' is
+authenticated, use 'jsonrpc'.
+
+*bitcoin* supports SSL (https) JSON-RPC connections beginning with version
+0.3.14. See the rpcssl wiki page for setup instructions and a list of all
+*bitcoin.conf(5)* configuration options.
+
+The configuration file is not automatically created; you can create it using
+your favorite plain-text editor. By default, *bitcoin* (or *bitcoind(1)*) will
+look for a file named *bitcoin.conf(5)* in the *bitcoin* data directory, but both
+the data directory and the configuration file path may be changed using the
+'-datadir' and '-conf' command-line arguments.
+
+Under Linux create '~/.bitcoin/bitcoin.conf'. Under Windows create
+*bitcoin.conf(5)* in the *bitcoin* data directory.
+
+
+EXAMPLE
+-------
+
+bitcoin.conf: ::
+----
+    rpcuser=myusername
+    rpcpassword=secretpassword
+----
+
+Now run: ::
+----
+    $ ./bitcoind
+    bitcoin server starting
+    $ ./bitcoind help
+----
+
+A list of RPC calls will be shown: ::
+----
+    $ ./bitcoind getbalance
+    2000.00000
+----
+
+
+OPTIONS
+-------
+*-conf=*<'file'> ::
+    Specify configuration file (default: *bitcoin.conf(5)*).
+
+*-datadir*=<'dir'> ::
+    Specify data directory.
+
+
+COMMAND
+-------
+The following functions provide an interface to *bitcoin*. Currently, they reside
+in 'rpc.cpp':
+
+*backupwallet* 'destination' ::
+    Safely copies *wallet.dat* to 'destination', which can be a directory or a
+    path with filename.
+
+*getaccount* 'bitcoinaddress' ::
+    Returns the account associated with the given address.
+
+*setaccount* 'bitcoinaddress' ['account'] ::
+    Sets the ['account'] associated with the given address. ['account'] may be
+    omitted to remove an address from ['account'].
+
+*getaccountaddress* 'account' ::
+    Returns a new bitcoin address for 'account'.
+
+*getaddressesbyaccount* 'account' ::
+    Returns the list of addresses associated with the given 'account'.
+
+*getbalance* 'account' ::
+    Returns the server's available balance, or the balance for 'account'.
+
+    *note: requires bitcoin v0.3.18 or later.
+
+*getblockcount* ::
+    Returns the number of blocks in the longest block chain.
+
+*getblocknumber* ::
+    Returns the block number of the latest block in the longest block chain.
+
+*getconnectioncount* ::
+    Returns the number of connections to other nodes.
+
+*getdifficulty* ::
+    Returns the proof-of-work difficulty as a multiple of the minimum
+    difficulty.
+
+*getgenerate* ::
+    Returns boolean true if server is trying to generate bitcoins, false
+    otherwise.
+
+*setgenerate* 'generate' ['genproclimit'] ::
+    Generation is limited to ['genproclimit'] processors, -1 is unlimited.
+
+*gethashespersec* ::
+    Returns a recent hashes per second performance measurement while
+    generating.
+
+*getinfo* ::
+    Returns an object containing server information.
+
+*getnewaddress* 'account' ::
+    Returns a new bitcoin address for receiving payments. If 'account' is
+    specified (recommended), it is added to the address book so payments
+    received with the address will be credited to 'account'.
+
+*getreceivedbyaccount* 'account' ['minconf=1'] ::
+    Returns the total amount received by addresses associated with 'account' in
+    transactions with at least ['minconf'] confirmations.
+
+*getreceivedbyaddress* 'bitcoinaddress' ['minconf=1'] ::
+    Returns the total amount received by 'bitcoinaddress' in transactions with at
+    least ['minconf'] confirmations.
+
+*gettransaction* 'txid' ::
+    Returns information about a specific transaction, given hexadecimal
+    transaction ID.
+
+    *note: requires bitcoin 0.3.18 or later.
+
+*getwork* 'data' ::
+    If 'data' is specified, tries to solve the block and returns true if it was
+    successful. If 'data' is not specified, returns formatted hash 'data' to
+    work on:
+
+    "midstate" : precomputed hash state after hashing the first half of the data.
+    "data"     : block data.
+    "hash1"    : formatted hash buffer for second hash.
+    "target"   : little endian hash target.
+
+*help* 'command' ::
+    List commands, or get help for a command.
+
+*listaccounts* ['minconf=1'] ::
+    List accounts and their current balances.
+
+    *note: requires bitcoin 0.3.20 or later.
+
+*listreceivedbyaccount* ['minconf=1'] ['includeempty=false'] ::
+    ['minconf'] is the minimum number of confirmations before payments are
+    included. ['includeempty'] whether to include addresses that haven't received
+    any payments. Returns an array of objects containing:
+
+    "account"       : the account of the receiving address.
+    "amount"        : total amount received by the address.
+    "confirmations" : number of confirmations of the most recent transaction included.
+
+*listreceivedbyaddress* ['minconf=1'] ['includeempty=false'] ::
+    ['minconf'] is the minimum number of confirmations before payments are
+    included. ['includeempty'] whether to include addresses that haven't received
+    any payments. Returns an array of objects containing:
+
+    "address"       : receiving address.
+    "account"       : the account of the receiving address.
+    "amount"        : total amount received by the address.
+    "confirmations" : number of confirmations of the most recent transaction included.
+
+*listtransactions* 'account' ['count=10'] ::
+    Returns a list of the last ['count'] transactions for 'account' - for all
+    accounts if 'account' is not specified or is "*". Each entry in the list 
+    may contain:
+
+    "category"      : will be generate, send, receive, or move.
+    "amount"        : amount of transaction.
+    "fee"           : Fee (if any) paid (only for send transactions).
+    "confirmations" : number of confirmations (only for generate/send/receive).
+    "txid"          : transaction ID (only for generate/send/receive).
+    "otheraccount"  : account funds were moved to or from (only for move).
+    "message"       : message associated with transaction (only for send).
+    "to"            : message-to associated with transaction (only for send).
+
+    *note: requires bitcoin 0.3.20 or later.
+
+*move* <'fromaccount'> <'toaccount'> <'amount'> ['minconf=1'] ['comment'] ::
+    Moves funds between accounts.
+
+    *note: requires bitcoin 0.3.18 or later.
+     
+*sendfrom* <'account'> <'bitcoinaddress'> <'amount'> ['minconf=1'] ['comment'] ['comment-to'] ::
+    Sends amount from account's balance to 'bitcoinaddress'. This method will
+    fail if there is less than amount bitcoins with ['minconf'] confirmations in
+    the account's balance (unless account is the empty-string-named default
+    account; it behaves like the *sendtoaddress* method). Returns transaction ID
+    on success.
+     
+*sendtoaddress* 'bitcoinaddress' 'amount' ['comment'] ['comment-to'] ::
+    Sends amount from the server's available balance to 'bitcoinaddress'. amount
+    is a real and is rounded to the nearest 0.01. Returns transaction id on
+    success.
+    
+*stop* ::
+    Stops the bitcoin server.
+    
+*validateaddress* 'bitcoinaddress' ::
+    Checks that 'bitcoinaddress' looks like a proper bitcoin address. Returns an
+    object containing:
+
+    "isvalid" : true or false.
+    "ismine"  : true if the address is in the server's wallet.
+    "address" : bitcoinaddress.
+
+    *note: ismine and address are only returned if the address is valid.
+
+
+JSON-RPC
+--------
+To access the *bitcoin* server you should find a suitable library for your
+language.
+
+
+EXAMPLES
+--------
+
+*Python* ::
+   For Python, python-jsonrpc is perfect. Python-jsonrpc auto-magically
+   generates Python methods corresponding to the functions above. For example:
+
+----
+    from jsonrpc import ServiceProxy
+
+    access = ServiceProxy("http://user:password@127.0.0.1:8332")
+    access.getinfo()
+    access.listreceivedbyaddress(6)
+    access.sendtoaddress("11yEmxiMso2RsFVfBcCa616npBvGgxiBX", 10)
+----
+
+*PHP* ::
+    The JSON-RPC PHP library also makes it very easy to connect to *bitcoin*. For
+    example:
+
+----
+    require_once 'jsonRPCClient.php';
+
+    $bitcoin = new jsonRPCClient('http://user:pass@127.0.0.1:8332/'); 
+ 
+    echo "<pre>\n";
+    print_r($bitcoin->getinfo()); echo "\n";
+    echo "Received: ".$bitcoin->getreceivedbylabel("Your Address")."\n";
+    echo "</pre>";
+----
+
+*Java* ::
+    The easiest way to tell Java to use HTTP Basic authentication is to set a
+    default Authenticator. Once that is done, any JSON-RPC library for Java (or
+    ordinary URL POSTs) may be used to communicate with the *bitcoin* server. You
+    can also use the open source Java *bitcoin* Client.
+
+----
+    final String rpcuser ="...";
+    final String rpcpassword ="...";
+
+    Authenticator.setDefault(new Authenticator() {
+        protected PasswordAuthentication getPasswordAuthentication() {
+            return new PasswordAuthentication (rpcuser, rpcpassword.toCharArray());
+        }
+    });
+----
+
+*Perl* ::
+    The JSON::RPC package from CPAN can be used to communicate with *bitcoin*.
+    You must set the client's credentials; for example:
+
+----
+    use JSON::RPC::Client;
+    use Data::Dumper;
+ 
+    my $client = new JSON::RPC::Client;
+
+    $client->ua->credentials(
+       # REPLACE WITH YOUR bitcoin.conf rpcuser/rpcpassword
+       'localhost:8332', 'jsonrpc', 'user' => 'password'
+    );
+
+    my $uri = 'http://localhost:8332/';
+    my $obj = {
+        method  => 'getinfo',
+        params  => [],
+    };
+ 
+    my $res = $client->call( $uri, $obj );
+ 
+    if ($res){
+        if ($res->is_error) { print "Error : ", $res->error_message; }
+        else { print Dumper($res->result); }
+    } else {
+        print $client->status_line;
+    }
+----
+
+"*.NET (C#)*" ::
+    The communication with rpc service can be achieved using the standard
+    httprequest/response objects. A library for serialising and deserialising
+    Json will make your life a lot easier (JayRock for .NET 4.0, Json.Net for
+    .NET 2.0 and above). The following example uses Json.Net:
+
+----
+    HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create("http://localhost.:8332");
+    webRequest.Credentials = new NetworkCredential("user", "pwd");
+    /// important, otherwise the service can't desirialse your request properly
+    webRequest.ContentType = "application/json-rpc";
+    webRequest.Method = "POST";
+
+    JObject joe = new JObject();
+    joe.Add(new JProperty("jsonrpc", "1.0"));
+    joe.Add(new JProperty("id", "1"));
+    joe.Add(new JProperty("method", Method));
+    // params is a collection values which the method requires..
+    if (Params.Keys.Count == 0)
+    {
+        joe.Add(new JProperty("params", new JArray()));
+    }
+    else
+    {
+        JArray props = new JArray();
+        // add the props in the reverse order!
+        for (int i = Params.Keys.Count - 1; i >= 0; i--)
+        {
+           .... // add the params
+        }
+        joe.Add(new JProperty("params", props));
+     }
+
+     // serialize json for the request
+     string s = JsonConvert.SerializeObject(joe);
+     byte[] byteArray = Encoding.UTF8.GetBytes(s);
+     webRequest.ContentLength = byteArray.Length;
+     Stream dataStream = webRequest.GetRequestStream();
+     dataStream.Write(byteArray, 0, byteArray.Length);
+     dataStream.Close();
+
+
+     WebResponse webResponse = webRequest.GetResponse();
+
+     ... // deserialze the response
+----
+
+*Command line (curl)* ::
+    You can also send commands and see results using curl or some other
+    command-line HTTP-fetching utility. For example:
+
+----
+    curl --user user --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getinfo", "params": [] }' \ 
+        -H 'content-type: text/plain;' http://127.0.0.1:8332/
+----
+
+    You will be prompted for your rpcpassword, and then will see something like:
+
+----
+    {
+        "result":
+                     {
+                         "balance":0.000000000000000,
+                         "blocks":59952,
+                         "connections":48,
+                         "proxy":"",
+                         "generate":false,
+                         "genproclimit":-1,
+                         "difficulty":16.61907875185736,
+                         "error":null,
+                         "id":"curltest"
+                     }
+    }
+----
+
+
+BUGS
+----
+Please report any bug or question in the *bitcoin* forum user:
+<http://www.bitcoin.org/smf/>
+
+
+HISTORY
+-------
+
+November 09, 2008 ::
+* *bitcoin* project registered at SourceForge.net
+
+January 3, 2009 ::
+* Genesis block established at 18:15:05 GMT
+
+January 11, 2009 ::
+* *bitcoin* v0.1 released and announced on the cryptography mailing list
+
+March 24, 2009 ::
+* *bitcoin* design paper published
+
+December 16, 2009 ::
+* *bitcoin* v0.2 released
+
+December 30, 2009 ::
+* First difficulty increase at 06:11:04 GMT
+
+July 7, 2010 ::
+* *bitcoin* v0.3 released
+
+July 11, 2010 ::
+* *bitcoin* v0.3 release mentioned on slashdot, bringing a large influx of new
+  bitcoin users
+
+October 04, 2010 ::
+* *bitcoin* History wiki page (this page) established (ooh so meta)
+
+November 6, 2010 ::
+* The *bitcoin* economy passed US $1 million. The MtGox price touched USD $0.50
+
+December 7, 2010 ::
+* *bitcoind* was ported to the Nokia N900 phone by doublec. The following day,
+  ribuck sent him 0.42 BTC in the first phone-to-phone *bitcoin* transaction
+
+December 9, 2010 ::
+* The generation difficulty passed 10,000
+
+
+SEE ALSO
+--------
+*bitcoin.conf(5)*
+
+
+AUTHOR
+------
+*bitcoin* was writte by *Satoshi Nakamoto* <satoshin@gmx.com>.
+
+This manual page was originally adapted by *Mario Oyorzabal Salgado*
+<tuxsoul@tuxsoul.com> for the Debian\(TM) system (but may be used by others).
+
+Permission is granted to copy, distribute and/or modify this document under the
+terms of the GNU General Public License, Version 2 any later version published
+by the Free Software Foundation.
+
+On Debian systems, the complete text of the GNU General Public License can be 
+found in '/usr/share/common\-licenses/GPL'.
+
+
+RESOURCES
+---------
+
+MAIN
+~~~~
+* Website: <http://www.bitcoin.org/>
+* Sourceforge: <http://sourceforge.net/projects/bitcoin/>
+
+WIKI
+~~~~
+* History: <http://www.bitcoin.org/wiki/doku.php?id=bitcoin_history>
+* API: <http://www.bitcoin.org/wiki/doku.php?id=api>
+* Running bitcoin: <http://www.bitcoin.org/wiki/doku.php?id=running_bitcoin>
+
+
+LICENSE
+-------
+\(C) 2008-2010 *Satoshi Nakamoto* <satoshin@gmx.com>. Free use of this software
+is granted under the terms of the MIT License.
+
+

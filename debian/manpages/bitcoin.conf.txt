@@ -1,0 +1,235 @@
+bitcoin.conf(5)
+===============
+
+
+NAME
+----
+bitcoin.conf - bitcoin configuration file
+
+
+SYNOPSIS
+--------
+All command-line options (except for '-datadir' and '-conf') may be specified
+in a configuration file, and all configuration file options may also be
+specified on the command line. Command-line options override values set in the
+configuration file.
+
+The configuration file is a list of 'setting=value' pairs, one per line, with
+optional comments starting with the '#' character.
+
+The configuration file is not automatically created; you can create it using
+your favorite plain-text editor. By default, *bitcoin* (or *bitcoind(1)*) will
+look for a file named *bitcoin.conf(5)* in the *bitcoin* data directory, but both
+the data directory and the configuration file path may be changed using the
+'-datadir' and '-conf' command-line arguments.
+
+
+EXAMPLE
+-------
+Location of *bitcoin.conf(5)*:
+
+*Windows* ::
+----
+Path: %APPDATA%\Bitcoin\
+Example: C:\Documents and Settings\username\Application Data\Bitcoin\bitcoin.conf
+----
+
+*Linux* ::
+----
+Path: $HOME/.bitcoin/
+Example: /Users/username/.bitcoin/bitcoin.conf
+----
+
+*Mac OSX* ::
+----
+Path: $HOME/Library/Application Support/Bitcoin/
+Example: /Users/username/Library/Application Support/Bitcoin/bitcoin.conf
+----
+
+
+OPTIONS
+-------
+
+Network-related Settings
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+*testnet*=['1'|'0'] ::
+    Enable or disable run on the test network instead of the real *bitcoin*
+    network.
+
+*proxy*='127.0.0.1:9050' ::
+    Connect via a socks4 proxy.
+
+*addnode*='10.0.0.2:8333' ::
+    Use as many *addnode=* settings as you like to connect to specific peers.
+
+*connect*='10.0.0.1:8333' ::
+    Use as many *connect=* settings as you like to connect ONLY to specific
+    peers.
+
+*noirc*=['1'|'0'] ::
+    Use or Do not use Internet Relay Chat (irc.lfnet.org #bitcoin channel) to
+    find other peers.
+
+*maxconnections*='value' ::
+    Maximum number of inbound+outbound connections.
+
+JSON-RPC Options
+~~~~~~~~~~~~~~~~
+For controlling a running *bitcoin*/*bitcoind(1)* process.
+
+*server*=['1'|'0'] ::
+    Tells *bitcoin* to accept or not accept JSON-RPC commands.
+
+*rpcuser*='username' ::
+    You must set *rpcuser* to secure the JSON-RPC api.
+
+*rpcpassword*='password' ::
+    You must set *rpcpassword* to secure the JSON-RPC api.
+
+*rpctimeout*='30' ::
+    How many seconds *bitcoin* will wait for a complete RPC HTTP request, after
+    the HTTP connection is established.
+
+*rpcallowip*='192.168.1.*' ::
+    By default, only RPC connections from localhost are allowed. Specify as
+    many *rpcallowip=* settings as you like to allow connections from other
+    hosts (and you may use * as a wildcard character).
+
+*rpcport*='8332' ::
+    Listen for RPC connections on this TCP port.
+
+*rpcconnect*='127.0.0.1' ::
+    You can use *bitcoin* or *bitcoind(1)* to send commands to *bitcoin*/*bitcoind(1)*
+    running on another host using this option.
+
+*rpcssl*='1' ::
+    Use Secure Sockets Layer (also known as TLS or HTTPS) to communicate with
+    *bitcoin* '-server' or *bitcoind(1)*. Example of OpenSSL settings used when 
+    *rpcssl*='1':
+
+----    
+    rpcsslciphers=TLSv1+HIGH:!SSLv2:!aNULL:!eNULL:!AH:!3DES:@STRENGTH
+    rpcsslcertificatechainfile=server.cert
+    rpcsslprivatekeyfile=server.pem
+----
+
+Miscellaneous Options
+~~~~~~~~~~~~~~~~~~~~~
+
+*gen*=['0'|'1'] ::
+    Enable or disable attempt to generate bitcoins.
+
+*4way*=['0'|'1'] ::
+    Enable or disable use SSE instructions to try to generate bitcoins faster.
+
+*keypool*='100' ::
+    Pre-generate this many public/private key pairs, so wallet backups will be
+    valid for both prior transactions and several dozen future transactions.
+
+*paytxfee*='0.00' ::
+    Pay an optional transaction fee every time you send bitcoins. Transactions
+    with fees are more likely than free transactions to be included in
+    generated blocks, so may be validated sooner.
+
+*allowreceivebyip*='1' ::
+    Allow direct connections for the 'pay via IP address' feature.
+
+User interface Options
+~~~~~~~~~~~~~~~~~~~~~~
+
+*min*=['0'|'1'] ::
+    Enable or disable start *bitcoin* minimized.
+
+*minimizetotray*=['0'|'1'] ::
+    Enable or disable minimize to the system tray.
+
+
+BUGS
+----
+Please report any bug or question in the *bitcoin* forum user:
+<http://www.bitcoin.org/smf/>
+
+
+HISTORY
+-------
+
+November 09, 2008 ::
+* *bitcoin* project registered at SourceForge.net
+
+January 3, 2009 ::
+* Genesis block established at 18:15:05 GMT
+
+January 11, 2009 ::
+* *bitcoin* v0.1 released and announced on the cryptography mailing list
+
+March 24, 2009 ::
+* *bitcoin* design paper published
+
+December 16, 2009 ::
+* *bitcoin* v0.2 released
+
+December 30, 2009 ::
+* First difficulty increase at 06:11:04 GMT
+
+July 7, 2010 ::
+* *bitcoin* v0.3 released
+
+July 11, 2010 ::
+* *bitcoin* v0.3 release mentioned on slashdot, bringing a large influx of new
+  bitcoin users
+
+October 04, 2010 ::
+* *bitcoin* History wiki page (this page) established (ooh so meta)
+
+November 6, 2010 ::
+* The *bitcoin* economy passed US $1 million. The MtGox price touched USD $0.50
+
+December 7, 2010 ::
+* *bitcoind* was ported to the Nokia N900 phone by doublec. The following day,
+  ribuck sent him 0.42 BTC in the first phone-to-phone *bitcoin* transaction
+
+December 9, 2010 ::
+* The generation difficulty passed 10,000
+
+
+SEE ALSO
+--------
+*bitcoind(1)*
+
+
+AUTHOR
+------
+*bitcoin* was writte by *Satoshi Nakamoto* <satoshin@gmx.com>.
+
+This manual page was originally adapted by *Mario Oyorzabal Salgado*
+<tuxsoul@tuxsoul.com> for the Debian\(TM) system (but may be used by others).
+
+Permission is granted to copy, distribute and/or modify this document under the
+terms of the GNU General Public License, Version 2 any later version published
+by the Free Software Foundation.
+
+On Debian systems, the complete text of the GNU General Public License can be 
+found in '/usr/share/common\-licenses/GPL'.
+
+
+RESOURCES
+---------
+
+MAIN
+~~~~
+* Website: <http://www.bitcoin.org/>
+* Sourceforge: <http://sourceforge.net/projects/bitcoin/>
+
+WIKI
+~~~~
+* History: <http://www.bitcoin.org/wiki/doku.php?id=bitcoin_history>
+* API: <http://www.bitcoin.org/wiki/doku.php?id=api>
+* Running bitcoin: <http://www.bitcoin.org/wiki/doku.php?id=running_bitcoin>
+
+
+LICENSE
+-------
+\(C) 2008-2010 *Satoshi Nakamoto* <satoshin@gmx.com>. Free use of this software
+is granted under the terms of the MIT License.
+
