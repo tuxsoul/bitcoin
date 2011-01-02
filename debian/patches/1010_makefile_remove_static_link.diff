@@ -1,0 +1,28 @@
+Description: Removed static and dynamic link options in build process.
+Author: Mario Oyorzabal Salgado <tuxsoul@tuxsoul.com>
+--- a/makefile.unix
++++ b/makefile.unix
+@@ -9,15 +9,12 @@
+ 
+ # for wxWidgets 2.9.1, add -l Xxf86vm
+ WXLIBS= \
+- -Wl,-Bstatic \
+    -l wx_gtk2ud-2.9 \
+- -Wl,-Bdynamic \
+    -l gtk-x11-2.0 \
+    -l SM
+ 
+ # for boost 1.37, add -mt to the boost libraries
+ LIBS= \
+- -Wl,-Bstatic \
+    -l boost_system \
+    -l boost_filesystem \
+    -l boost_program_options \
+@@ -25,7 +22,6 @@
+    -l db_cxx \
+    -l ssl \
+    -l crypto \
+- -Wl,-Bdynamic \
+    -l gthread-2.0 \
+    -l z \
+    -l dl

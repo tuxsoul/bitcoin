@@ -1,0 +1,17 @@
+Description: Removed not standard optimization options in build process.
+Author: Mario Oyorzabal Salgado <tuxsoul@tuxsoul.com>
+--- a/makefile.unix
++++ b/makefile.unix
+@@ -52,10 +52,10 @@
+ 	g++ -c $(CFLAGS) -DGUI -o $@ $<
+ 
+ cryptopp/obj/%.o: cryptopp/%.cpp
+-	g++ -c $(CFLAGS) -O3 -o $@ $<
++	g++ -c $(CFLAGS) -o $@ $<
+ 
+ obj/sha256.o: sha256.cpp
+-	g++ -c $(CFLAGS) -msse2 -O3 -march=amdfam10 -o $@ $<
++	g++ -c $(CFLAGS) -msse2 -o $@ $<
+ 
+ bitcoin: $(OBJS) obj/ui.o obj/uibase.o obj/sha256.o
+ 	g++ $(CFLAGS) -o $@ $^ $(WXLIBS) $(LIBS)
