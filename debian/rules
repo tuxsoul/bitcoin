@@ -33,6 +33,11 @@ build: build-stamp
 build-stamp: configure-stamp 
 	dh_testdir
 
+	# create objects directory
+	mkdir obj/
+	mkdir obj/nogui/
+	mkdir cryptopp/obj/
+
 	# Add here commands to compile the package.
 	$(MAKE) -f makefile.unix bitcoind
 	#docbook-to-man debian/bitcoin.sgml > bitcoin.1
@@ -61,6 +66,11 @@ clean:
 	# remove manpages (not source txt files)
 	rm -f debian/manpages/bitcoind.{1,xml}
 	rm -f debian/manpages/bitcoin.conf.{5,xml}
+
+	# remove objects directory
+	rmdir cryptopp/obj/
+	rmdir obj/nogui/
+	rmdir obj/
 
 	dh_clean 
 
