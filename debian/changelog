@@ -1,3 +1,10 @@
+bitcoin (0.3.19-1) unstable; urgency=low
+
+  * New upstream release.
+  * debian/ChangeLog.1: updated with last output of "git-log" command.
+
+ -- Mario Oyorzabal Salgado <tuxsoul@tuxsoul.com>  Mon, 03 Jan 2011 16:06:22 -0600
+
 bitcoin (0.3.17-1) unstable; urgency=low
 
   * Initial release.
