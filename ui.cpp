@@ -391,7 +391,7 @@ void CMainFrame::OnIconize(wxIconizeEvent& event)
     if (!event.Iconized())
         fClosedToTray = false;
 #if defined(__WXGTK__) || defined(__WXMAC_OSX__)
-    if (mapArgs.count("-minimizetotray")) {
+    if (GetBoolArg("-minimizetotray")) {
 #endif
     // The tray icon sometimes disappears on ubuntu karmic
     // Hiding the taskbar button doesn't work cleanly on ubuntu lucid
@@ -697,16 +697,13 @@ bool CMainFrame::InsertTransaction(const CWalletTx& wtx, bool fNew, int nIndex)
         if (fAllFromMe && fAllToMe)
         {
             // Payment to self
-            int64 nValue = wtx.vout[0].nValue;
+            int64 nChange = wtx.GetChange();
             InsertLine(fNew, nIndex, hash, strSort, colour,
                        strStatus,
                        nTime ? DateTimeStr(nTime) : "",
                        _("Payment to yourself"),
-                       "",
-                       "");
-            /// issue: can't tell which is the payment and which is the change anymore
-            //           FormatMoney(nNet - nValue, true),
-            //           FormatMoney(nValue, true));
+                       FormatMoney(-(nDebit - nChange), true),
+                       FormatMoney(nCredit - nChange, true));
         }
         else if (fAllFromMe)
         {
@@ -1376,10 +1373,10 @@ CTxDetailsDialog::CTxDetailsDialog(wxWindow* parent, CWalletTx wtx) : CTxDetails
                 if (fAllToMe)
                 {
                     // Payment to self
-                    /// issue: can't tell which is the payment and which is the change anymore
-                    //int64 nValue = wtx.vout[0].nValue;
-                    //strHTML += _("<b>Debit:</b> ") + FormatMoney(-nValue) + "<br>";
-                    //strHTML += _("<b>Credit:</b> ") + FormatMoney(nValue) + "<br>";
+                    int64 nChange = wtx.GetChange();
+                    int64 nValue = nCredit - nChange;
+                    strHTML += _("<b>Debit:</b> ") + FormatMoney(-nValue) + "<br>";
+                    strHTML += _("<b>Credit:</b> ") + FormatMoney(nValue) + "<br>";
                 }
 
                 int64 nTxFee = nDebit - wtx.GetValueOut();
@@ -1636,7 +1633,7 @@ COptionsDialog::COptionsDialog(wxWindow* parent) : COptionsDialogBase(parent)
 #endif
 #if defined(__WXGTK__) || defined(__WXMAC_OSX__)
     m_checkBoxStartOnSystemStartup->SetLabel(_("&Start Bitcoin on window system startup"));
-    if (!mapArgs.count("-minimizetotray"))
+    if (!GetBoolArg("-minimizetotray"))
     {
         // Minimize to tray is just too buggy on Linux
         fMinimizeToTray = false;
@@ -1799,7 +1796,7 @@ void COptionsDialog::OnButtonApply(wxCommandEvent& event)
 
 CAboutDialog::CAboutDialog(wxWindow* parent) : CAboutDialogBase(parent)
 {
-    m_staticTextVersion->SetLabel(strprintf(_("version %s%s beta"), FormatVersion(VERSION).c_str(), pszSubVer));
+    m_staticTextVersion->SetLabel(strprintf(_("version %s%s BETA"), FormatVersion(VERSION).c_str(), pszSubVer));
 
     // Change (c) into UTF-8 or ANSI copyright symbol
     wxString str = m_staticTextMain->GetLabel();
@@ -2744,10 +2741,10 @@ wxMenu* CMyTaskBarIcon::CreatePopupMenu()
 void CreateMainWindow()
 {
     pframeMain = new CMainFrame(NULL);
-    if (mapArgs.count("-min"))
+    if (GetBoolArg("-min"))
         pframeMain->Iconize(true);
 #if defined(__WXGTK__) || defined(__WXMAC_OSX__)
-    if (!mapArgs.count("-minimizetotray"))
+    if (!GetBoolArg("-minimizetotray"))
         fMinimizeToTray = false;
 #endif
     pframeMain->Show(true);  // have to show first to get taskbar button to hide

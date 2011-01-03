@@ -265,7 +265,7 @@ public:
 class CTxDB : public CDB
 {
 public:
-    CTxDB(const char* pszMode="r+") : CDB(!fClient ? "blkindex.dat" : NULL, pszMode) { }
+    CTxDB(const char* pszMode="r+") : CDB("blkindex.dat", pszMode) { }
 private:
     CTxDB(const CTxDB&);
     void operator=(const CTxDB&);
@@ -435,6 +435,7 @@ public:
     bool WriteAccount(const string& strAccount, const CAccount& account);
     bool WriteAccountingEntry(const string& strAccount, const CAccountingEntry& acentry);
     int64 GetAccountCreditDebit(const string& strAccount);
+    void ListAccountCreditDebit(const string& strAccount, list<CAccountingEntry>& acentries);
 
     bool LoadWallet();
 protected:

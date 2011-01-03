@@ -345,9 +345,25 @@ public:
     {
         if (!MoneyRange(nValue))
             throw runtime_error("CTxOut::GetCredit() : value out of range");
-        if (IsMine())
-            return nValue;
-        return 0;
+        return (IsMine() ? nValue : 0);
+    }
+
+    bool IsChange() const
+    {
+        // On a debit transaction, a txout that's mine but isn't in the address book is change
+        vector<unsigned char> vchPubKey;
+        if (ExtractPubKey(scriptPubKey, true, vchPubKey))
+            CRITICAL_BLOCK(cs_mapAddressBook)
+                if (!mapAddressBook.count(PubKeyToAddress(vchPubKey)))
+                    return true;
+        return false;
+    }
+
+    int64 GetChange() const
+    {
+        if (!MoneyRange(nValue))
+            throw runtime_error("CTxOut::GetChange() : value out of range");
+        return (IsChange() ? nValue : 0);
     }
 
     friend bool operator==(const CTxOut& a, const CTxOut& b)
@@ -483,6 +499,17 @@ public:
         return n;
     }
 
+    bool IsStandard() const
+    {
+        foreach(const CTxIn& txin, vin)
+            if (!txin.scriptSig.IsPushOnly())
+                return error("nonstandard txin: %s", txin.scriptSig.ToString().c_str());
+        foreach(const CTxOut& txout, vout)
+            if (!::IsStandard(txout.scriptPubKey))
+                return error("nonstandard txout: %s", txout.scriptPubKey.ToString().c_str());
+        return true;
+    }
+
     bool IsMine() const
     {
         foreach(const CTxOut& txout, vout)
@@ -518,6 +545,20 @@ public:
                 throw runtime_error("CTransaction::GetCredit() : value out of range");
         }
         return nCredit;
+    }
+
+    int64 GetChange() const
+    {
+        if (IsCoinBase())
+            return 0;
+        int64 nChange = 0;
+        foreach(const CTxOut& txout, vout)
+        {
+            nChange += txout.GetChange();
+            if (!MoneyRange(nChange))
+                throw runtime_error("CTransaction::GetChange() : value out of range");
+        }
+        return nChange;
     }
 
     int64 GetValueOut() const
@@ -721,18 +762,19 @@ public:
     vector<CMerkleTx> vtxPrev;
     map<string, string> mapValue;
     vector<pair<string, string> > vOrderForm;
+    unsigned int fTimeReceivedIsTxTime;
     unsigned int nTimeReceived;  // time received by this node
     char fFromMe;
     char fSpent;
-    char fTimeReceivedIsTxTime;
-    char fUnused;
     string strFromAccount;
 
     // memory only
     mutable char fDebitCached;
     mutable char fCreditCached;
+    mutable char fChangeCached;
     mutable int64 nDebitCached;
     mutable int64 nCreditCached;
+    mutable int64 nChangeCached;
 
     // memory only UI hints
     mutable unsigned int nTimeDisplayed;
@@ -760,16 +802,17 @@ public:
         vtxPrev.clear();
         mapValue.clear();
         vOrderForm.clear();
+        fTimeReceivedIsTxTime = false;
         nTimeReceived = 0;
         fFromMe = false;
         fSpent = false;
-        fTimeReceivedIsTxTime = false;
-        fUnused = false;
         strFromAccount.clear();
         fDebitCached = false;
         fCreditCached = false;
+        fChangeCached = false;
         nDebitCached = 0;
         nCreditCached = 0;
+        nChangeCached = 0;
         nTimeDisplayed = 0;
         nLinesDisplayed = 0;
         fConfirmedDisplayed = false;
@@ -777,24 +820,23 @@ public:
 
     IMPLEMENT_SERIALIZE
     (
+        CWalletTx* pthis = const_cast<CWalletTx*>(this);
         if (fRead)
-            const_cast<CWalletTx*>(this)->Init();
+            pthis->Init();
         nSerSize += SerReadWrite(s, *(CMerkleTx*)this, nType, nVersion, ser_action);
         READWRITE(vtxPrev);
+
+        pthis->mapValue["fromaccount"] = pthis->strFromAccount;
         READWRITE(mapValue);
+        pthis->strFromAccount = pthis->mapValue["fromaccount"];
+        pthis->mapValue.erase("fromaccount");
+        pthis->mapValue.erase("version");
+
         READWRITE(vOrderForm);
-        READWRITE(nVersion);
-        if (fRead && nVersion < 100)
-            const_cast<CWalletTx*>(this)->fTimeReceivedIsTxTime = nVersion;
+        READWRITE(fTimeReceivedIsTxTime);
         READWRITE(nTimeReceived);
         READWRITE(fFromMe);
         READWRITE(fSpent);
-        if (nVersion >= 31404)
-        {
-            READWRITE(fTimeReceivedIsTxTime);
-            READWRITE(fUnused);
-            READWRITE(strFromAccount);
-        }
     )
 
     int64 GetDebit() const
@@ -808,7 +850,7 @@ public:
         return nDebitCached;
     }
 
-    int64 GetCredit(bool fUseCache=false) const
+    int64 GetCredit(bool fUseCache=true) const
     {
         // Must wait until coinbase is safely deep enough in the chain before valuing it
         if (IsCoinBase() && GetBlocksToMaturity() > 0)
@@ -820,6 +862,46 @@ public:
         nCreditCached = CTransaction::GetCredit();
         fCreditCached = true;
         return nCreditCached;
+    }
+
+    int64 GetChange() const
+    {
+        if (fChangeCached)
+            return nChangeCached;
+        nChangeCached = CTransaction::GetChange();
+        fChangeCached = true;
+        return nChangeCached;
+    }
+
+    void GetAccountAmounts(string strAccount, const set<CScript>& setPubKey,
+                           int64& nGenerated, int64& nReceived, int64& nSent, int64& nFee) const
+    {
+        nGenerated = nReceived = nSent = nFee = 0;
+
+        // Generated blocks count to account ""
+        if (IsCoinBase())
+        {
+            if (strAccount == "" && GetBlocksToMaturity() == 0)
+                nGenerated = GetCredit();
+            return;
+        }
+
+        // Received
+        foreach(const CTxOut& txout, vout)
+            if (setPubKey.count(txout.scriptPubKey))
+                nReceived += txout.nValue;
+
+        // Sent
+        if (strFromAccount == strAccount)
+        {
+            int64 nDebit = GetDebit();
+            if (nDebit > 0)
+            {
+                int64 nValueOut = GetValueOut();
+                nFee = nDebit - nValueOut;
+                nSent = nValueOut - GetChange();
+            }
+        }
     }
 
     bool IsFromMe() const
@@ -1084,14 +1166,12 @@ public:
     }
 
 
-    bool WriteToDisk(bool fWriteTransactions, unsigned int& nFileRet, unsigned int& nBlockPosRet)
+    bool WriteToDisk(unsigned int& nFileRet, unsigned int& nBlockPosRet)
     {
         // Open history file to append
         CAutoFile fileout = AppendBlockFile(nFileRet);
         if (!fileout)
             return error("CBlock::WriteToDisk() : AppendBlockFile failed");
-        if (!fWriteTransactions)
-            fileout.nType |= SER_BLOCKHEADERONLY;
 
         // Write index header
         unsigned int nSize = fileout.GetSerializeSize(*this);
@@ -1234,6 +1314,19 @@ public:
         nTime          = block.nTime;
         nBits          = block.nBits;
         nNonce         = block.nNonce;
+    }
+
+    CBlock GetBlockHeader() const
+    {
+        CBlock block;
+        block.nVersion       = nVersion;
+        if (pprev)
+            block.hashPrevBlock = pprev->GetBlockHash();
+        block.hashMerkleRoot = hashMerkleRoot;
+        block.nTime          = nTime;
+        block.nBits          = nBits;
+        block.nNonce         = nNonce;
+        return block;
     }
 
     uint256 GetBlockHash() const
@@ -1436,6 +1529,16 @@ public:
             READWRITE(nVersion);
         READWRITE(vHave);
     )
+
+    void SetNull()
+    {
+        vHave.clear();
+    }
+
+    bool IsNull()
+    {
+        return vHave.empty();
+    }
 
     void Set(const CBlockIndex* pindex)
     {
@@ -1651,7 +1754,7 @@ public:
     // Actions
     string strComment;
     string strStatusBar;
-    string strRPCError;
+    string strReserved;
 
     IMPLEMENT_SERIALIZE
     (
@@ -1669,7 +1772,7 @@ public:
 
         READWRITE(strComment);
         READWRITE(strStatusBar);
-        READWRITE(strRPCError);
+        READWRITE(strReserved);
     )
 
     void SetNull()
@@ -1687,7 +1790,7 @@ public:
 
         strComment.clear();
         strStatusBar.clear();
-        strRPCError.clear();
+        strReserved.clear();
     }
 
     string ToString() const
@@ -1712,7 +1815,6 @@ public:
                 "    nPriority    = %d\n"
                 "    strComment   = \"%s\"\n"
                 "    strStatusBar = \"%s\"\n"
-                "    strRPCError  = \"%s\"\n"
                 ")\n",
             nVersion,
             nRelayUntil,
@@ -1725,8 +1827,7 @@ public:
             strSetSubVer.c_str(),
             nPriority,
             strComment.c_str(),
-            strStatusBar.c_str(),
-            strRPCError.c_str());
+            strStatusBar.c_str());
     }
 
     void print() const
