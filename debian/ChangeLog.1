@@ -1,0 +1,1431 @@
+commit 477237abb787f799781a848d5f4a8009ffe6797b
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Thu Nov 25 20:41:57 2010 +0000
+
+    -- version 0.3.17 release
+
+
+commit 7a3688fa1d202af3e7e7a0de708841aa7ed66176
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Thu Nov 25 16:40:25 2010 +0000
+
+    still working on account-based commands getbalance, move and sendfrom,
+    they're only for testing for now
+
+
+commit 1b3127d203430974af2be97a80f90ebf5167278e
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Tue Nov 23 19:16:36 2010 +0000
+
+    new getwork
+
+
+commit 4e14f3b8b8179743ed6523ea2920acc828c41600
+Author: Gavin Andresen <gavinandresen@gmail.com>
+Date:   Mon Nov 22 15:53:20 2010 +0000
+
+    Depracate "label" API, replacing with account
+    New RPC methods: move, sendfrom
+    Change to getbalance (now takes optional [account] argument)
+    Renamed methods with "label" in their names.
+    sendtoaddress returns hexadecimal transaction ID instead of "sent".
+
+
+
+
+commit ccf320df0c9a635c8f7f1ce202721fc821557ecf
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Sun Nov 21 22:46:19 2010 +0000
+
+    added transaction fee setting in UI options menu,
+    cut free transaction area from 50KB to 26KB
+
+
+commit ead6c254f2d4fd04834c76ef655835689b6cbb43
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Sat Nov 20 02:12:03 2010 +0000
+
+    small bugfix
+
+
+commit f97b80e59efedd6c6a87e20d9291243af50519ce
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Fri Nov 19 23:37:05 2010 +0000
+
+    require some minimal priority for free transactions to slow down
+    transaction spam
+
+
+commit 5bf0feca56b6b6a3786ec085f42df7d81e75fc04
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Fri Nov 19 20:22:46 2010 +0000
+
+    efficiently sort transaction dependencies in one pass
+
+
+commit 116560c10dbee3d2d952eff495d3720673e78d16
+Author: Gavin Andresen <gavinandresen@gmail.com>
+Date:   Thu Nov 18 00:11:33 2010 +0000
+
+    OutputDebugStringF fix for Mac FileVault problem, take 3
+    (cannot use a CRITICAL_BLOCK because of undefined order calling
+    static destructors;
+    instead, keep debug.log open, and tell people to use copytruncate
+    when doing
+    log rotation)
+
+
+
+commit 32f209b85c80f2b310909cedc3f0b3b5ef269e85
+Author: Gavin Andresen <gavinandresen@gmail.com>
+Date:   Tue Nov 16 17:41:44 2010 +0000
+
+    Make OutputDebugStringF thread-safe again (thanks ArtForz for
+    catching)
+
+
+commit f5a56462c982c07f9fc15576db7ba93eac813c87
+Author: Gavin Andresen <gavinandresen@gmail.com>
+Date:   Tue Nov 16 02:32:36 2010 +0000
+
+    Re-open debug.log every ten minutes instead of every printf; fixes
+    performance problem with Mac FileVault.
+
+
+commit b21bfd63687f16de0f43e3b973b128b534571cf1
+Author: Gavin Andresen <gavinandresen@gmail.com>
+Date:   Mon Nov 15 21:37:33 2010 +0000
+
+    Update websites used for GetMyExternalIP
+
+
+commit 9b64d7b09a6eef50d351f006bd56f413b32d43b5
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Sun Nov 14 00:06:10 2010 +0000
+
+    -- version 0.3.15 release
+
+
+commit 5d9818a7d625b9223132a9e5a024db6437a3334f
+Author: Gavin Andresen <gavinandresen@gmail.com>
+Date:   Wed Nov 10 16:43:31 2010 +0000
+
+    Add paytxfee to getinfo output
+
+
+commit 493c44477d4b88a3c3d140a65e7818dce1f60797
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Tue Nov 9 19:47:07 2010 +0000
+
+    SelectCoins first pass tries not to use coins with less than 6
+    confirmations
+
+
+commit 634aeb05401c0b1cb745adf24b91a2ca606a8f5d
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Mon Nov 8 22:06:07 2010 +0000
+
+    -paytxfee is now per KB,
+    BitcoinMiner prioritise transactions by how old their dependencies are
+
+
+commit d5941827cdd96bc570cf5c983a3b6b12faa59f2c
+Author: Gavin Andresen <gavinandresen@gmail.com>
+Date:   Thu Nov 4 00:23:00 2010 +0000
+
+    Fix IsInitialBlockDownload if running on testnet
+
+
+commit 9ab39f3b016322870c8c4b6d5aefc6e0919a3c26
+Author: Gavin Andresen <gavinandresen@gmail.com>
+Date:   Wed Nov 3 23:40:43 2010 +0000
+
+    Prevent double-sends from quick double-button-clicks
+
+
+commit 1d1c67d2bcde1363bda98ab97d0fa7e681201ac5
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Sat Oct 23 17:43:53 2010 +0000
+
+    bugfixes from Dean Gores,
+    addr system changes,
+    make sure no gen before block 74000
+
+
+commit d00eb9b8b76ea47dcf7e141f4299bd9a1893a5ec
+Author: Gavin Andresen <gavinandresen@gmail.com>
+Date:   Fri Oct 22 15:15:20 2010 +0000
+
+    testnet and keypoololdest added to RPC getinfo output.  And RPC now
+    sends proper HTTP Date headers.
+
+
+commit 515fb7bb44cd73dee3505594472df500fe75c477
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Thu Oct 21 16:47:16 2010 +0000
+
+    -- version 0.3.14 release
+
+
+commit 619d459ce9c742fc00dfd0890d109a65e8f75fe9
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Wed Oct 20 16:12:23 2010 +0000
+
+    Gavin Andresen: multiple instance check, -testnet use port 18333
+
+
+commit 3f785ecf3ca4aa491c7bb042ff7824699bd06e5b
+Author: Gavin Andresen <gavinandresen@gmail.com>
+Date:   Wed Oct 20 15:58:16 2010 +0000
+
+    validateaddress RPC command
+
+
+commit 60a996ff59552f960b654bd8ffb4efc194be6f15
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Tue Oct 19 17:16:51 2010 +0000
+
+    Gavin's TEST network as -testnet switch, misc fixes
+
+
+commit cd371d8d7b5c684c1c318d4fa995efcf61ff867d
+Author: Gavin Andresen <gavinandresen@gmail.com>
+Date:   Thu Oct 14 13:33:03 2010 +0000
+
+    makefile.unix tweak from Xunie so bitcoind links on Ubuntu 10.04
+    x86_64
+
+
+commit 948b314a37021d4b8dde2c4e7d84a54108816219
+Author: Gavin Andresen <gavinandresen@gmail.com>
+Date:   Mon Oct 11 18:32:33 2010 +0000
+
+    Fixed description of -rpcuser/-rpcpassword options.
+
+
+commit 19bf0f9567d330f4a3156a2242e6893ae3962481
+Author: Gavin Andresen <gavinandresen@gmail.com>
+Date:   Mon Oct 11 18:23:41 2010 +0000
+
+    -rpcssl=1 option, allowing secure HTTPS JSON-RPC connections on
+    OSX/Unix.
+
+
+commit 4bcec516123027e39a2d50a52fc501300f51d79c
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Mon Oct 11 15:12:17 2010 +0000
+
+    dkaparis: boost::bind build fix for c++0x
+
+
+commit a79cbdac7f129cf6e0b89bf080a15869203dc754
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Sat Oct 9 19:33:35 2010 +0000
+
+    key pool for safer wallet backup
+
+
+commit 320b32912d999021781933f535bb375adf42bfb6
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Wed Oct 6 15:43:04 2010 +0000
+
+    updated Russian translation
+
+
+commit 36a0fe673808b1d43296b02acc42bc5bb10709f6
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Wed Oct 6 02:19:47 2010 +0000
+
+    recursive function to determine if own unconfirmed transaction can
+    be spent
+
+
+commit d1d34ca28df06a150eb090106f08a3b54082eff8
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Mon Oct 4 01:40:50 2010 +0000
+
+    Russian translation by eurekafag
+
+
+commit cd83eb7c1848c86a8ee059f2cd2c18f671b722d0
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Thu Sep 30 23:54:15 2010 +0000
+
+    fixed linux build,
+    dkaparis: _WIN32_WINNT 0x500
+    -- version 0.3.13 release
+
+
+commit 71eb484cbb498d07d4690528b26907cde2043122
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Thu Sep 30 16:23:07 2010 +0000
+
+    don't count or spend payments until they have 1 confirmation,
+    misc cleanup,
+    changed internal version number from 312 to 31300
+    -- version 0.3.13
+
+
+commit ce50610ca0b9ed886925efaa93ade4301f42878d
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Thu Sep 23 16:01:44 2010 +0000
+
+    changed free transactions per block threshold
+
+
+commit 75326272af05ce9b53f192464a92b9ff666ce6d4
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Sun Sep 19 21:20:34 2010 +0000
+
+    only accept transactions sent by IP address if -allowreceivebyip
+    is specified
+
+
+commit 935e7469473fe74b1ddf92a4f59adfef489d9de8
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Wed Sep 15 22:10:13 2010 +0000
+
+    config option -rpcallowip= to accept json-rpc connections from
+    another machine
+
+
+commit 83f925b66c528a51fb3685a1fb1bf7646ada1c1b
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Mon Sep 13 22:14:24 2010 +0000
+
+    reorganize BitcoinMiner to make it easier to add different SHA256
+    routines
+
+
+commit b68c3afc0427ced2094129c89ffc3aaf7f5fe6f8
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Sun Sep 12 17:30:15 2010 +0000
+
+    dropped DB_PRIVATE from dbenv.open
+
+
+commit 6c32fd798ec0e02882bd2076140dbc7805897a0b
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Fri Sep 10 18:07:48 2010 +0000
+
+    fix build on non-intel architectures, thanks teknohog
+
+
+commit a41584545d66a878da29bc4fa71b2c79e45dec8e
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Fri Sep 10 16:58:59 2010 +0000
+
+    fix problem sending the last cent with sub-cent fractional change
+
+
+commit 3b19885e3c80ab1287f08516b572c88ac3a70c06
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Thu Sep 9 01:00:40 2010 +0000
+
+    try to auto-detect whether to use 128-bit 4-way SSE2
+
+
+commit da3d1c2e08a5d5eb047212f878c6441180378e6f
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Wed Sep 8 19:24:32 2010 +0000
+
+    Gavin Andresen: clean shutdown on SIGTERM
+
+
+commit e87e2c4f4ec3a9fb7b68eacae3a296f1fa75fa18
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Tue Sep 7 01:12:53 2010 +0000
+
+    cleanup,
+    catch some recoverable exceptions and continue
+    -- version 0.3.12 release
+
+
+commit 1a0ba938c4d193f45f8dccb2c40a1ca32da7a7ad
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Mon Sep 6 21:03:04 2010 +0000
+
+    Gavin Andresen: json-rpc return standard error objects with error
+    code numbers,
+    json-rpc command line client return exit code,
+    added rpc backupwallet command
+
+
+commit caab856beb2cdf496d122211b0bc9b7a65515000
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Sun Aug 29 16:58:15 2010 +0000
+
+    propset svn:eol-style native
+
+
+commit 80c5eb2571175b1a5ea46070282c2f8e319f0c07
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Wed Aug 25 17:53:09 2010 +0000
+
+    added -testsafemode switch
+    -- version 0.3.11 release
+
+
+commit e090034bd8f129c8f069ec747463ef8eefffec4a
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Wed Aug 25 16:33:38 2010 +0000
+
+    change switch name to -disablesafemode
+
+
+commit 0b233c3524114355e22318555a6886bb4159cc76
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Wed Aug 25 14:18:56 2010 +0000
+
+    more rpc methods allowed in safe mode
+
+
+commit efc16f6e270a0bbcfa3de259bcca421280646d61
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Wed Aug 25 00:05:37 2010 +0000
+
+    alert system
+    -- version 0.3.11
+
+
+commit 37983d8915d887830e0aca8173ce42f185bc513c
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Fri Aug 20 16:55:14 2010 +0000
+
+    warning message if clock is too far off
+
+
+commit 45227185e6934911e8e6c6bdeb9184c0c7a2b83c
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Thu Aug 19 22:43:19 2010 +0000
+
+    block index checking on load, extra redundant checks, misc refactoring
+
+
+commit b158283cfd8d2627836a7fa65593a5d608ebea27
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Mon Aug 16 18:46:02 2010 +0000
+
+    do an extra CheckBlock in ConnectBlock
+
+
+commit 734b5d4e78bda5518d59c038b25f30a15ef6156d
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Mon Aug 16 17:51:10 2010 +0000
+
+    erase the bad chain after disconnecting it
+
+
+commit 5a88132c55dd3e37074da7dc86e6e96f28135679
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Mon Aug 16 17:05:50 2010 +0000
+
+    blocks-1,
+    verify block chain on load, so wouldn't have needed to delete
+    blk*.dat, it would have done a reorg automatically
+
+
+commit 89e2061358b553224283808bc13803dd6ae30c02
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Mon Aug 16 13:37:00 2010 +0000
+
+    wrap sha256.cpp in FOURWAYSSE2 #ifdef
+
+
+commit be61f5c02bcef023428dcba615cdb314ed2dc91d
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Mon Aug 16 13:11:32 2010 +0000
+
+    added -march=amdfam10 to sha256.cpp in makefile.unix
+
+
+commit 7e8e75398a97b7335a6bb875aa2964b720151ae5
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Sun Aug 15 22:46:58 2010 +0000
+
+    makefile.unix to build with option to enable tcatm's 4-way SSE2
+    SHA-256 with -4way switch on Linux
+    -- version 0.3.10 release
+
+
+commit ae63577e868dde1599c68778ac378950ef7a0962
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Sun Aug 15 22:21:03 2010 +0000
+
+    scanback check to prevent adding to the 74638 overflow chain
+
+
+commit e205dad8f98fac2b5a42f5138d6964ab8e3850b4
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Sun Aug 15 21:35:24 2010 +0000
+
+    fix for block 74638 overflow output transaction
+
+
+commit 6ca0768cbc94c33085f9047b2b9ccdfcde10b8a1
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Sun Aug 15 21:05:16 2010 +0000
+
+    misc changes
+
+
+commit 8747d35b98b625e0779e69288c86b7580059efee
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Thu Aug 12 21:13:43 2010 +0000
+
+    fix -datadir=./subdir relative path,
+    autostart off by default except on windows,
+    fix occasional "vector iterator not dereferencable" assertion
+    with msvc,
+    fix readlink compile warning on linux build,
+    use sys/param.h and BSD define instead of __BSD__,
+    -paytxfee switch
+
+
+commit aba4771d7018911a10207d672f8e7e3165ae71a1
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Wed Aug 11 01:38:24 2010 +0000
+
+    fix build, thanks jgarzik
+
+
+commit cf9d408dd50e546c369b63d369e49d6467691f81
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Tue Aug 10 23:43:37 2010 +0000
+
+    disable SSE2 on 32-bit
+
+
+commit 42ef05d4ce583f65671cb8f375dcd7858602a477
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Tue Aug 10 22:55:23 2010 +0000
+
+    gethashespersec and added version and hashespersec to getinfo
+
+
+commit ecb60f66f64c248a781ccc4b29a8b0ff7f273764
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Tue Aug 10 19:21:17 2010 +0000
+
+    json-spirit print reals with 8 decimal places,
+    bitcoind help <command> instead of bitcoind <command> -?
+
+
+commit ce7953eaff9afc943947150dc73da28cdb8f7fdb
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Mon Aug 9 20:00:17 2010 +0000
+
+    always make 8 outbound connections even if have inbound,
+    limit one outbound connection per a.b.?.? range,
+    switch -maxconnections=#
+
+
+commit f562b0915e24abeb0ecfc16a12a3357aa2917b83
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Mon Aug 9 19:54:40 2010 +0000
+
+    enable SSE2 in all builds to fix crypto++ SHA-256 on 64-bit
+
+
+commit 2a03429c2cfbd2fd4466d45bb96c293bd4e5d6bb
+Author: Laszlo Hanyecz <solar@heliacal.net>
+Date:   Wed Aug 4 04:15:38 2010 +0000
+
+    correct typo for mac compile, update makefile to use llvm
+
+
+commit eb749284bc4bbfed3e65f0bca85b9cacb83ef8fc
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Tue Aug 3 18:25:05 2010 +0000
+
+    new safety feature displays a warning message and locks down RPC if
+    it detects a problem that may require an upgrade
+    -- version 0.3.8
+
+
+commit 2334a56fe51fde1cc2bb8124b44d320aaabf29ce
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Sat Jul 31 19:15:48 2010 +0000
+
+    fixed segfault in bignum.h,
+    additional security limits,
+    refactoring
+    -- version 0.3.7
+
+
+commit a59ddd513766302b4f9fa372f35e220d2d026b22
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Fri Jul 30 23:22:55 2010 +0000
+
+    simplified makefile.unix, updated build-unix.txt instructions to
+    include boost 1.37
+
+
+commit 35ae9c89fcc66b5cb3dbd441f231ccc559278995
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Thu Jul 29 20:27:12 2010 +0000
+
+    reverted makefile.unix wx-config -- version 0.3.6
+
+
+commit 9164ef67e1bf2604f023d050df86c9fe1b8dd757
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Thu Jul 29 15:34:48 2010 +0000
+
+    Fredrik Roubert: simplified makefile.unix with wx-config,
+    misc
+
+
+commit 9a83b7c1943aa8be44fdb3dae9ea94e1ed73c8a3
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Wed Jul 28 21:17:35 2010 +0000
+
+    fixed makefile.osx
+
+
+commit 9ecf9c13dabf12e8ffbd5e62aedae8a4bd987fe8
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Wed Jul 28 21:11:09 2010 +0000
+
+    fixed makefile.vc
+
+
+commit 89ffb7013f03b1842384eb1e5c6a47f5dd4eee10
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Tue Jul 27 19:43:04 2010 +0000
+
+    better IsInitialBlockDownload
+
+
+commit 796726a3f6d6e2f937d85be7f0a0157f5f989fe4
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Tue Jul 27 18:14:32 2010 +0000
+
+    added a subset of Crypto++ 5.6.0 with 48% faster ASM SHA-256, combined
+    speedup 2.5x faster vs 0.3.3, thanks BlackEye for figuring out the
+    alignment problem
+
+
+commit 20e87072865b2fd5871acf78d3c4d543c42e1b8c
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Tue Jul 27 01:14:33 2010 +0000
+
+    tcatm's cached SHA256 state idea, about 70% faster generating
+
+
+commit 7cb222243074b88815fee8edde6be38858b5bdfe
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Mon Jul 26 17:15:18 2010 +0000
+
+    bitcoind now compiles without wxWidgets or wxBase
+
+
+commit 953836b43da567e06f076e8f665498c08208ac19
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Sun Jul 25 21:49:21 2010 +0000
+
+    Gavin: BIO_FLAGS_BASE64_NO_NL
+
+
+commit 0525cb54b4ff0a81d3285b783a8bf5f3f473d82c
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Sun Jul 25 21:29:07 2010 +0000
+
+    Lachesis: remove newlines every 64 characters in EncodeBase64
+
+
+commit 9093ecfa6bd563a3d86172408a439856bbd611de
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Sun Jul 25 16:45:21 2010 +0000
+
+    Gavin Andresen's JSON-RPC HTTP authentication,
+    faster initial block download
+    -- version 0.3.3
+
+
+commit 902fd0bfab97d8257993cef3d0bda466836d5fd5
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Sun Jul 18 20:47:29 2010 +0000
+
+    minor UI tweaks, removed some outdated txt files,
+    (and json-rpc password -rpcpw= switch, which we're going to revert)
+
+
+commit 2ae214826066e200a66b131b3e151a0b5f6534fc
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Sat Jul 17 23:51:16 2010 +0000
+
+    security safeguards,
+    limited addr messages
+    -- version 0.3.2
+
+
+commit 3073466781a7ae724c666c31fb1435711fd6ea53
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Fri Jul 16 23:12:58 2010 +0000
+
+    version 0.3.1 release
+
+
+commit 00b97d40b2f18db9cbdbe43df44c0d2ecec8d7c3
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Thu Jul 15 19:11:51 2010 +0000
+
+    Spanish translation by milkiway,
+    French translation by aidos
+
+
+commit a49f7913d54738fdb782946833d9a96c873d7a17
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Thu Jul 15 16:46:46 2010 +0000
+
+    version 0.3.1 rc1
+
+
+commit c5c009ee69e83dae0b9aace864d1fb46ecac2768
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Thu Jul 15 00:18:45 2010 +0000
+
+    fix openssl linkage problems,
+    disable minimize to tray on Linux because it has too many problems
+    including a CPU peg bug
+
+
+commit ffc6af16d62be740764dc08e3f1d105f2c5cefdd
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Fri Jul 9 15:29:48 2010 +0000
+
+    switched from wxStandardPaths to GetDefaultDataDir, fixes bug reported
+    by m0mchil when username contains non-lower-ASCII characters
+    -- version 0.3.1
+
+
+commit 3d65c7ba87a34b562a5cd3d7be6b467f00c0e15b
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Fri Jul 9 02:11:50 2010 +0000
+
+    Gavin Andresen: implementation of autostart on system startup option
+    on Linux
+
+
+commit f608549fc5dded64487cf00d689828c839128998
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Thu Jul 8 18:07:14 2010 +0000
+
+    Portuguese translation by Tiago Faria
+
+
+commit 1dc70eda61d2deb102b6fd39d1340e42a299f179
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Thu Jul 8 16:14:56 2010 +0000
+
+    Laszlo's fix to make generate threads idle priority on Linux,
+    replaced some wxBase dependencies: wxMutex, wxFileExists,
+    wxStandardPaths, wxGetLocalTimeMillis
+
+
+commit d67866db08b5d584103d6dc035473689ae1c92fb
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Sun Jul 4 06:15:06 2010 +0000
+
+    version 0.3 release
+
+
+commit 33e8335a619376fd32698fab92cc86bacd9c6f2c
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Fri Jul 2 23:43:29 2010 +0000
+
+    reduced max outbound connections from 15 to 8 --version 0.3 rc4
+
+
+commit 17aeb9d5508b0c3e19589f068164ae765a116411
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Sat Jun 26 15:47:45 2010 +0000
+
+    version 0.3 rc2
+
+
+commit cb68c4b9b70452874e8412ad0ab5867b106de53e
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Sat Jun 26 00:23:16 2010 +0000
+
+    build-unix.txt: updated a few version numbers
+
+
+commit 0d8d47b50a9253f5b97c6d69436c71ff7092c476
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Thu Jun 24 16:07:51 2010 +0000
+
+    updated build-unix.txt instructions: sudo apt-get install
+    libboost-all-dev
+
+
+commit b04ea28b14bc7de71c5e6c08116685127c515a92
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Wed Jun 23 22:51:31 2010 +0000
+
+    added instructions to build-unix.txt for building wxBase, which is
+    needed to compile bitcoind
+
+
+commit 24416222a4e424bb92a1e9fb8e3a9ddfdeb3dead
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Tue Jun 22 17:59:00 2010 +0000
+
+    version 0.3 rc1
+
+
+commit d401588309aeeb3c001ec40d90703af47f18bd91
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Tue Jun 22 16:28:15 2010 +0000
+
+    added new files to setup.nsi, updated version numbers
+
+
+commit 178e03d5fa4daee41404ddb1eebbeddd4dea4525
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Tue Jun 22 03:45:37 2010 +0000
+
+    re-enable hiding taskbar button on minimize on linux, though it
+    doesn't work cleanly
+
+
+commit 5ab06b5206d535ac7fe053457ab2b4347c153984
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Mon Jun 21 18:41:34 2010 +0000
+
+    fix system tray icon on windows
+
+
+commit 9982efd543c16a65ea90dd4560808abda71a1ea4
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Mon Jun 21 17:11:26 2010 +0000
+
+    80x80 xpm icon for ubuntu, alignment tweaked to scale nicely to
+    20x20 and 16x16
+
+
+commit e5932e913dd311f8788b26e1bb304d17264e98c3
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Mon Jun 21 01:33:44 2010 +0000
+
+    fixed colors on ubuntu lucid,
+    enabled -O2 in makefile.unix,
+    boost removed -mt from their library names in 1.40,
+    updated bitcoin icon,
+    hashmeter,
+    generated and hashmeter log entries
+    -- version 0.2.13
+
+
+commit 89096ca5c796c8f65d62bc7ed39256697e1f2a67
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Fri Jun 18 03:14:24 2010 +0000
+
+    use seed nodes as fallback if IRC fails or with TOR
+    -- version 0.2.12
+
+
+commit 8de362cbfaad252a416d809bfd03bbafeddd9911
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Wed Jun 16 16:35:34 2010 +0000
+
+    German translation by DataWraith
+
+
+commit cbc09084b3461c9c708b7995be67ebd160547630
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Tue Jun 15 18:26:32 2010 +0000
+
+    more addr message error checking
+    -- version 0.2.11
+
+
+commit 531aea4e1872460840dfa34e37fae136d5d320b8
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Mon Jun 14 22:34:33 2010 +0000
+
+    revert makefile.unix from -02 back to -00 to fix compile on linux,
+    -02 doesn't really help on linux anyway
+
+
+commit bb48050f89de5cdfa7aa84c545f5354828570856
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Thu Jun 10 23:10:30 2010 +0000
+
+    automatically change displayed address whenever it receives anything,
+    added help and -? for daemon command line rpc commands,
+    only relay addr messages to 5 random nodes to save bandwidth,
+    started setting wtx.fFromMe flag,
+    trickle out tx inventory messages to protect privacy
+     -- version 0.2.10
+
+
+commit e2542a9a12444eba8d1c5775b34b89ed0e38ee6d
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Wed Jun 2 22:10:06 2010 +0000
+
+    Dutch translation by Xunie (93% complete)
+
+
+commit 931d250498259d4c071abc645047e49a42a2bec5
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Thu May 27 14:11:03 2010 +0000
+
+    Italian translation by Joozero
+
+
+commit f0eaec0b046cabd4cb2e19cacd896782ab8993d3
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Wed May 26 00:05:26 2010 +0000
+
+    better prevention of inventory relaying during initial download,
+    message checksum between nodes with 0.2.9 or higher,
+    optimization level up from -O0 to -O2,
+    rpc functions: setlabel, getlabel, getaddressesbylabel,
+    getreceivedbyaddress, getreceivedbylabel, listreceivedbyaddress,
+    listreceivedbylabel
+     -- version 0.2.9
+
+
+commit aeeb1fc4804ae34a37a087724038f46335eb2126
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Tue May 25 23:58:27 2010 +0000
+
+    build-osx.txt build instructions and makefile.osx from Laszlo
+
+
+commit 1c0c67e5f04c98ca28c86b22693fafafa8b400da
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Wed May 19 00:26:56 2010 +0000
+
+    Mac OS build fixes by laszlo
+    -- version 0.2.8
+
+
+commit 399073c2d44ff7443fd62dd270701b658ca37471
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Fri Mar 5 02:55:09 2010 +0000
+
+    misc
+
+
+commit 88917b5449a932139a2a16a0e909f6f6422311c0
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Fri Mar 5 01:13:27 2010 +0000
+
+    fixed runaway memory alloc bug on 64-bit in ParseString found
+    by sirius-m
+
+
+commit 414a2123e6cc662b8f8ffd6ef70839545f1feddb
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Sun Feb 28 15:00:32 2010 +0000
+
+    fix unsafe string handling in wxGetTranslation
+
+
+commit 064f49a282d03fe0970c3ab9ab2e1a1113a8a3f6
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Fri Feb 26 16:09:43 2010 +0000
+
+    wx/utils.h and wx/clipbrd.h not needed on bitcoind wxbase build
+
+
+commit 1b45a0ca4359fd95f4a972c1b79324639a589cc1
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Thu Feb 25 21:55:27 2010 +0000
+
+    GUI-less build target bitcoind that links to wxBase and shouldn't
+    need GTK,
+    split init and shutdown from ui.cpp into init.cpp,
+    support wxUSE_GUI=0
+    -- version 0.2.7
+
+
+commit 18ed0b94614ea5f101365348bf55c9ff89324456
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Tue Feb 23 22:01:39 2010 +0000
+
+    run as daemon without GUI,
+    hooked wxApp::Initialize to ignore gtk-init-check failure if no GUI,
+    fork to daemonize,
+    rpc getinfo, getconnectioncount, getbalance, getgenerate, setgenerate,
+    -- version 0.2.6
+
+
+commit 8e1403d5003c888acca03ce6c5e34300179fc130
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Sun Feb 21 21:42:01 2010 +0000
+
+    transaction filter tabs instead of view->show generated
+    -- version 0.2.5
+
+
+commit 8ad23e1d12cdb5b2ef5da8c74ab82ff6e55b51a6
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Sat Feb 20 21:59:59 2010 +0000
+
+    Address Book with tabs instead of separate Your Address book,
+    with live update of default address in main window,
+    New... button on main window for creating new receiving address,
+    made receiving address labels more visible,
+    ask user before paying transaction fee,
+    when sending to bitcoin address also use a bitcoin address for
+    the change,
+    added some event.Skip() to fix UI glitches
+    -- version 0.2.4
+
+
+commit b2a278eeb159ea13ea145dc6324333db8dc9feca
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Wed Feb 17 23:55:43 2010 +0000
+
+    safer wxGetTranslation wrapper
+
+
+commit d6759f514cc1aa3b6c3a4b4c37648ad843e9659f
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Wed Feb 17 17:22:01 2010 +0000
+
+    all builds are now with wxWidgets-2.9.0, we are now using UTF-8,
+    added support for language translation file
+    locale/<lang>/LC_MESSAGES/bitcoin.mo
+    -- version 0.2.2
+
+
+commit cde0367c3d8309e0a41fd6059a980b336cd69f27
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Mon Feb 15 20:36:55 2010 +0000
+
+    fix mingw makefile to use correct wxWidgets include,
+    this is the last version of makefile and makefile.vc for wxWidgets-2.8
+
+
+commit 294aeada63c98f9059a74f3aff11b602a8f583c4
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Mon Feb 15 04:03:07 2010 +0000
+
+    strip out unfinished product, review and market stuff,
+    enable _() instead of wxT() in uiproject.fbp so it uses
+    wxGetTranslation for the wxFormBuilder generated part of the UI
+
+
+commit f1a5281b0dd53692279a217b8292c06b3a2c3d96
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Sun Feb 14 22:27:13 2010 +0000
+
+    renamed a few rpc methods
+
+
+commit bfe42f848efc49365846f40a23fd59c8baebe5a2
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Sun Feb 14 00:08:27 2010 +0000
+
+    Workaround for bug on wxWidgets 2.9.0 Ubuntu 9.10 64-bit where first
+    character of the hidden columns were displayed so status column had
+    three numbers overprinted.  Fixed by adding a leading space to the
+    hidden columns.  64-bit compile with wxWidgets 2.9.0 seems to be
+    fully working normally now.
+
+
+commit e31fde69b0f06301ef32c2aaa1787719dfd54e15
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Sat Feb 13 02:09:07 2010 +0000
+
+    updated build-unix.txt
+
+
+commit 11cd8a878a68939076bf0a877ac8bcd2d5dc57d7
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Fri Feb 12 20:38:44 2010 +0000
+
+    command line and JSON-RPC first draft, requires Boost 1.35 or higher
+    for boost::asio,
+    added SetBitcoinAddress and GetBitcoinAddress methods on CScript,
+    critsect interlocks around mapAddressBook,
+    added some random delays in tx broadcast to improve privacy,
+    now compiles with MSVC 8.0
+
+
+commit 8b2a7efbdea3004ee8687c88283594dc5307dc89
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Wed Feb 10 19:46:04 2010 +0000
+
+    better error message in check_type(), tell the types by name instead
+    of by number
+
+
+commit 127e102201fa59821b495d221351f5588b9a6096
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Wed Feb 10 19:41:22 2010 +0000
+
+    JSON Spirit library from
+    http://www.codeproject.com/KB/recipes/JSON_Spirit.aspx, MIT license
+
+
+commit 0b0a139bc07a7fdd83c81f7f7164789231c3544a
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Wed Feb 10 19:33:04 2010 +0000
+
+    revert revision 56, going in different direction with boost::asio
+    and JSON-RPC
+
+
+commit ce2c9af505b5ac7bbfbf3326418bb21de1b72983
+Author: Martti Malmi <sirius-m@users.sourceforge.net>
+Date:   Thu Feb 4 15:31:46 2010 +0000
+
+    Added some basic IPC functionality using wxServer, wxClient and
+    wxConnection.
+    Added the -blockamount command line option for an example of usage.
+
+
+
+commit 60aba887db106d9242b7ad0e1b760e0b112165f4
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Wed Feb 3 22:58:40 2010 +0000
+
+    update fSpent flag on wallet transactions if they're seen spent in
+    case copy of wallet.dat was used elsewhere or restored from backup,
+    better error dialog box if try to spend already spent coins,
+    got rid of unused notebook with only one tab on main dialog,
+    nicer looking About dialog,
+    resize About dialog better on linux
+
+
+commit df83806beb3c7342fe72f6fbfef2cd4e22e254d0
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Thu Jan 28 21:49:20 2010 +0000
+
+    now compiles on 64-bit Ubuntu Karmic with wxWidgets-2.9.0,
+    fixes for wxWidgets-2.9.0,
+    added superfluous GetEventHandler()'s,
+    there's still a bug on wx2.9.0 that the status number is mashed up
+    for some reason otherwise seems to run fine
+
+
+commit e84fc3f492f46e0fd1c1859b8342f1d835e7a7db
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Thu Jan 28 00:31:00 2010 +0000
+
+    simplify AddAddress,
+    readcompactsize limit,
+    fixed a 64-bit compile error in serialize.h,
+    change status "# blocks" to "# confirmations" and widen the column.
+
+
+commit b00856e4a3f1cfd34109304e82619ec0831cf23c
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Thu Dec 17 23:16:27 2009 +0000
+
+    command line switch -noui
+
+
+commit a7d9afc9157283e016234a2f430b62afcb50fdb9
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Thu Dec 17 18:15:50 2009 +0000
+
+    a few header changes for freebsd from madhatter
+
+
+commit e0e3f01afc9d04d327962ac5e0a6af580b3f54bc
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Mon Dec 14 02:12:01 2009 +0000
+
+    filter out duplicate getblocks and don't relay inv messages during
+    initial block download -- 0.2 rc2
+
+
+commit 51f77d6d0017fc82f8875fdf9b1a7f24b9d16ed0
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Sun Dec 13 02:34:45 2009 +0000
+
+    misc
+
+
+commit 1457b77d03cd5fc49c7dcf621002e7cd33134419
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Sun Dec 13 02:13:43 2009 +0000
+
+    restrict file permissions on linux to the user only
+
+
+commit 5f8d2685c784fdfe51c0357ed24f8720bf65e187
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Sun Dec 13 00:13:16 2009 +0000
+
+    misc exit code, updated setup.nsi
+
+
+commit 5a51ffa19075ba344fef0feb332aab5febdc073d
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Fri Dec 11 17:19:51 2009 +0000
+
+    misc
+
+
+commit 8cdfb75a3ea3056f0a61092ceedaced233954ce6
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Fri Dec 11 16:49:21 2009 +0000
+
+    retry IRC if name in use,
+    resize to fit ubuntu's giant default font,
+    scroll debug.log,
+    pause gen during initial block download
+
+
+commit 47282b5c6487e8f5d8c42ba33fb206362479665a
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Sun Dec 6 00:38:11 2009 +0000
+
+    misc
+
+
+commit bbb5a4fe43c941b7ab86691a1eeb530368f7ee22
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Sun Dec 6 00:29:09 2009 +0000
+
+    fix transaction fee bug in CreateTransaction, higher size cutoff
+    for free transactions in GetMinFee
+
+
+commit ba6cbc71e7ae7b7ab07cac50c9922fadf8334028
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Tue Nov 24 21:04:50 2009 +0000
+
+    minor fix to batched initial download in case requester has more
+    than 500 block non-main branch
+
+
+commit 08140d4122dd440ce031baf33083cbe49a6ecea4
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Wed Nov 18 19:19:41 2009 +0000
+
+    bugfix Db::open/close and zombie sockets bugs fix double-close of
+    socket handle,
+    keep databases open,
+    close db cursors,
+    initial block download in batches of 500 blocks,
+    fix misc warnings,
+    subver linux-test8
+
+
+commit a22480b6686003e751657caf82202ab929f28768
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Sat Nov 14 18:04:08 2009 +0000
+
+    misc compile error
+
+
+commit b42a3defb17e298c6c6e6d83725c979cf13dbf22
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Fri Nov 13 01:23:08 2009 +0000
+
+    monitor ThreadSocketHandler and terminate and restart if hung, convert
+    _beginthread to CreateThread wrapper, disconnect inactive connections,
+    ping, break up long messages to speed up initial download, better
+    priorities for initiating connections, track how many nodes have
+    requested our blocks and transactions, status #/offline and warning
+    message on unsent blocks, minimize on close as separate option --
+    linux-test5
+
+
+commit ab881dc81ffea4751b4a90eaceb059178d6c8af5
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Sun Nov 8 04:24:52 2009 +0000
+
+    Get local host IP on Linux, Shutdown() a little cleaner --
+    linux-0.1.6-test1 waypoint
+
+
+commit 61f48fa0329c3e80b4cc21db28967671110ed524
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Sat Nov 7 18:51:41 2009 +0000
+
+    ui tweaks, multiple xpm icon sizes
+
+
+commit 9ebec1bb43e07dd604367f86113b5061ab5f1711
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Sat Nov 7 05:05:03 2009 +0000
+
+    UI tweaks, use BindListenPort to detect instance already running,
+    setsockopt(SO_REUSEADDR) so can bind during TIME_WAIT after exit
+    and restart
+
+
+commit cd044fb43c31fe2127153c61e8963a58f9f28882
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Fri Nov 6 18:53:26 2009 +0000
+
+    UIThreadCall, ThreadSafeMessageBox
+
+
+commit 16d3ff181c47ac87595f1485d46a6c3c320e695a
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Fri Nov 6 05:50:05 2009 +0000
+
+    got rid of CheckForShutdown, replaced some thread-unsafe wxWidgets
+    calls, Linux fixes, socket send MSG_NOSIGNAL, bind INADDR_ANY,
+    works reliably on Linux now except if wxMessageBox is used in a
+    thread other than the GUI thread
+
+
+commit f1dca3cce7f1ff9d9dd63c14c04cab1183e5bafe
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Thu Nov 5 04:41:36 2009 +0000
+
+    unix build merged in, bitmap resources from xpm instead of rc,
+    better addr relay, better selection of addrs by time last seen for
+    faster connect
+
+
+commit c6c8bb7aaec4666ebba80478c36f43f7e13cfade
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Wed Nov 4 04:58:46 2009 +0000
+
+    renamed build.txt to build-msw.txt
+
+
+commit 434e71d87a2b8a3fdbacdd0e5e387d162bc5b9a6
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Sun Nov 1 01:16:51 2009 +0000
+
+    move debug.log and db.log to data dir, portable GetDataDir, optimize
+    GetBalance, fix repaint bogdown, -addnode and -? switches
+
+
+commit 1d0c80f860d56b3ae983b733944ea17d75d4529c
+Author: Martti Malmi <sirius-m@users.sourceforge.net>
+Date:   Sat Oct 31 09:52:24 2009 +0000
+
+    added wx/stdpaths.h
+
+
+commit 33657c6bcc82d67cbaf71e7cf871f6bbba15a184
+Author: Martti Malmi <sirius-m@users.sourceforge.net>
+Date:   Sat Oct 31 09:11:43 2009 +0000
+
+    Linux alternatives for the Windows headers and
+    PerformanceCounter. Some typedefs and #defines for the Linux
+    build. Fixed GetDataDir.
+
+
+commit bd4f9fd794b0e6f3c469a34e79551e3955e27ff5
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Fri Oct 30 00:57:05 2009 +0000
+
+    make CheckDiskSpace portable
+
+
+commit a978efbfb0627e3f4754afb4447dfa2a771f9dc5
+Author: Martti Malmi <sirius-m@users.sourceforge.net>
+Date:   Fri Oct 30 00:45:35 2009 +0000
+
+    setup script removes startup shortcut and runs with highest exec level
+
+
+commit 9945769c2e5d795ddfd871b8a1a21e42f3ae2a08
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Thu Oct 29 20:10:46 2009 +0000
+
+    better wallet.dat flush, consolidated QueryPerformanceCounter,
+    PRI64d printf portability
+
+
+commit 6eb6227b23ffaa5fdebbc1772eb4bc454a5caa3f
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Thu Oct 29 05:55:56 2009 +0000
+
+    CCriticalSection using wxWidgets instead of Windows OS calls
+
+
+commit 40330107d3b7198b247fed7f63a0b60120de1bd5
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Thu Oct 29 02:52:48 2009 +0000
+
+    addr relaying fixes, proxy option and privacy patches, detect connect
+    to self, non-final tx locktime changes, fix hide unconfirmed generated
+
+
+commit 4ca0515e55f9099866a9c91007ad7b7cb82692c1
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Sun Oct 25 04:35:01 2009 +0000
+
+    fix display of new generated coins, fix assertion in bitcoinminer
+
+
+commit 246468f96a5a81e494ee836094a5c0468c1d3362
+Author: Martti Malmi <sirius-m@users.sourceforge.net>
+Date:   Sat Oct 24 16:50:39 2009 +0000
+
+    Removed autorun regkey creation
+
+
+commit b5c45d5db1fb2247c364bab32e9fc5723677b691
+Author: Satoshi Nakamoto <satoshin@gmx.com>
+Date:   Wed Oct 21 01:08:05 2009 +0000
+
+    flush wallet.dat, multi-proc, reorg options, revert to startup
+    folder shortcut
+
+
+commit a2c790dfb1933b1dca2615065c3d6ebfd2339734
+Author: Martti Malmi <sirius-m@users.sourceforge.net>
+Date:   Sun Oct 4 11:38:29 2009 +0000
+
+    Fixed the installer script and made the autostart registry based.
+
+
+commit 2a193c8f143ec212bf2f3a251827510d12eef2a2
+Author: Martti Malmi <sirius-m@users.sourceforge.net>
+Date:   Sat Oct 3 17:02:59 2009 +0000
+
+    Added NSIS installer generation script
+
+
+commit 80a94fe80bbd84604ae25b1c59b9ba1d60290f4a
+Author: Martti Malmi <sirius-m@users.sourceforge.net>
+Date:   Sat Oct 3 11:52:21 2009 +0000
+
+    Startup folder shortcut opens the program minimized. Restoring a
+    minimized-to-tray window works correctly.
+
+
+commit 2da3c5203395e03b48486ae3ebeb7c6b4f17e319
+Author: Martti Malmi <sirius-m@users.sourceforge.net>
+Date:   Fri Oct 2 10:14:05 2009 +0000
+
+    startup shortcut works
+
+
+commit 7a6577d1a52ad7652fbf57cbd3762f35933ddab6
+Author: Martti Malmi <sirius-m@users.sourceforge.net>
+Date:   Thu Sep 24 04:09:56 2009 +0000
+
+    tray icon + ask before closing
+
+
+commit 75c5efb155506bd8a6921861af9e48ee9a29cb22
+Author: Martti Malmi <sirius-m@users.sourceforge.net>
+Date:   Wed Sep 16 13:26:04 2009 +0000
+
+    No dll's here
+
+
+commit de54d6c6d9eaef1b4a424ab8f319d44ea00c6964
+Author: Martti Malmi <sirius-m@users.sourceforge.net>
+Date:   Sun Aug 30 03:50:53 2009 +0000
+
+    Added changelog.txt
+
+
+
+commit 7a2779f4da9c9460039e918bdb7df61e591f9687
+Author: Martti Malmi <sirius-m@users.sourceforge.net>
+Date:   Sun Aug 30 03:46:39 2009 +0000
+
+    First commit
+
+
