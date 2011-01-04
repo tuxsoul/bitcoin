@@ -44,10 +44,10 @@ build-stamp: configure-stamp
 	#docbook-to-man debian/bitcoin.sgml > bitcoin.1
 
 	# build bitcoind(1) manpage
-	a2x -f manpage debian/manpages/bitcoind.txt
+	a2x -L -f manpage debian/manpages/bitcoind.txt
 
 	# build bitcoin.conf(5) manpage
-	a2x -f manpage debian/manpages/bitcoin.conf.txt
+	a2x -L -f manpage debian/manpages/bitcoin.conf.txt
 
 
 	touch $@

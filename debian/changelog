@@ -9,6 +9,7 @@ bitcoin (0.3.19-1) unstable; urgency=low
   * debian/copyright: updated debian package license to GPL-2.
   * debian/rules: added dh_lintian.
   * debian/control: removed quilt in Build-Depends.
+  * debian/rules: added "-L" in a2x to disable xmllint error in build manpages.
 
  -- Mario Oyorzabal Salgado <tuxsoul@tuxsoul.com>  Mon, 03 Jan 2011 16:06:22 -0600
 
