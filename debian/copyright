@@ -5,20 +5,37 @@ It was downloaded from http://sourceforge.net/projects/bitcoin/
 
 Upstream Author: Satoshi Nakamoto <satoshin@gmx.com>
 
-Copyright: 2008-2010, Satoshi Nakamoto <satoshin@gmx.com>
+Copyright: 2010, Bitcoin Developers
+           2008-2010, Satoshi Nakamoto <satoshin@gmx.com>
 License: MIT
 
-Files: ./src/json/*
+File: ./build-osx.txt
+File: ./makefile.osx
+Copyright: 2010, Laszlo Hanyecz
+License: MIT
+
+Files: ./cryptopp/*
+Copyright: 1995-2009, Wei Dai
+License: Public domain
+
+Files: ./json/*
 Copyright: 2007-2009, John W. Wilkinson
 License: MIT
 
-Files: ./src/sha.h, ./src/sha.cpp
-Copyright: None
-License: Public domain
+File: ./sha256.cpp
+Copyright: 2010, Nils Schneider
+License: MIT
 
-Files: ./src/strlcpy.h
+File: ./strlcpy.h
 Copyright: 1998, Todd C. Miller <Todd.Miller@courtesan.com>
 License: ISC
+
+File: ./debian/bitcoin.pdf
+Copyright: 2008-2010, Satoshi Nakamoto <satoshin@gmx.com>
+
+Files: ./debian/*
+Copyright: 2010-2011, Mario Oyorzabal Salgado <tuxsoul@tuxsoul.com>
+License: GPL-2+
 
 License: MIT
  Permission is hereby granted, free of charge, to any person obtaining a
@@ -28,10 +45,10 @@ License: MIT
  distribute, sublicense, and/or sell copies of the Software, and to
  permit persons to whom the Software is furnished to do so, subject to
  the following conditions:
-
+ .
  The above copyright notice and this permission notice shall be included
  in all copies or substantial portions of the Software.
-
+ .
  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -44,7 +61,7 @@ License: ISC
  Permission to use, copy, modify, and distribute this software for any
  purpose with or without fee is hereby granted, provided that the above
  copyright notice and this permission notice appear in all copies.
-
+ .
  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL
  WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED
  WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR
@@ -54,6 +71,21 @@ License: ISC
  ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
  SOFTWARE.
 
-The Debian packaging is (C) 2010, Mario Oyorzabal Salgado <tuxsoul@tuxsoul.com> and
-is licensed under the GPL, see `/usr/share/common-licenses/GPL'.
+License: GPL-2+
+ This program is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; either version 2 of the License, or
+ (at your option) any later version.
+ .
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ GNU General Public License for more details.
+ .
+ You should have received a copy of the GNU General Public License along
+ with this program; if not, write to the Free Software Foundation, Inc.,
+ 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
+
+The Debian packaging is (C) 2010, Mario Oyorzabal Salgado <tuxsoul@tuxsoul.com> and
+is licensed under the GPL, see above.
