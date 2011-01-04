@@ -33,6 +33,8 @@ build: build-stamp
 build-stamp: configure-stamp 
 	dh_testdir
 
+	dh_quilt_patch
+
 	# create objects directory
 	[ -d obj/ ] || mkdir obj/
 	[ -d obj/nogui/ ] || mkdir obj/nogui/
@@ -71,7 +73,7 @@ clean:
 	# remove missing files
 	rm -f bitcoind
 
-
+	dh_quilt_unpatch
 	dh_clean 
 
 install: build
@@ -108,6 +110,7 @@ binary-arch: build install
 #	dh_installinfo
 	dh_installman
 	dh_link
+	dh_lintian
 	dh_strip
 	dh_compress
 	dh_fixperms
