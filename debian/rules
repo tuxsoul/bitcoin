@@ -33,7 +33,6 @@ build: build-stamp
 build-stamp: configure-stamp 
 	dh_testdir
 
-	dh_quilt_patch
 
 	# create objects directory
 	[ -d obj/ ] || mkdir obj/
@@ -73,7 +72,6 @@ clean:
 	# remove missing files
 	rm -f bitcoind
 
-	dh_quilt_unpatch
 	dh_clean 
 
 install: build

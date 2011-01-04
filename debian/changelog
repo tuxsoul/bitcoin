@@ -7,7 +7,8 @@ bitcoin (0.3.19-1) unstable; urgency=low
   * debian/control: changed "debhelper >= 5" to "debhelper >= 7" in Build-Depends.
   * debian/control: switched "Standards-Version" to "3.8.0".
   * debian/copyright: updated debian package license to GPL-2.
-  * debian/rules: added dh_lintian, dh_quilt_patch, dh_quilt_unpatch.
+  * debian/rules: added dh_lintian.
+  * debian/control: removed quilt in Build-Depends.
 
  -- Mario Oyorzabal Salgado <tuxsoul@tuxsoul.com>  Mon, 03 Jan 2011 16:06:22 -0600
 
