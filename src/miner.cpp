@@ -72,7 +72,7 @@ int64_t UpdateTime(CBlockHeader* pblock, const Consensus::Params& consensusParam
 }
 
 
-CBlockTemplate* CreateNewBlock(const CChainParams& chainparams, const CScript& scriptPubKeyIn)
+CBlockTemplate* CreateNewBlock(const CChainParams& chainparams, const CScript& scriptPubKeyIn, CTxMemPool& mPool)
 {
     // Create new block
     auto_ptr<CBlockTemplate> pblocktemplate(new CBlockTemplate());
@@ -113,7 +113,7 @@ CBlockTemplate* CreateNewBlock(const CChainParams& chainparams, const CScript& s
     CAmount nFees = 0;
 
     {
-        LOCK2(cs_main, mempool.cs);
+        LOCK2(cs_main, mPool.cs);
         CBlockIndex* pindexPrev = chainActive.Tip();
         const int nHeight = pindexPrev->nHeight + 1;
         pblock->nTime = GetAdjustedTime();
@@ -156,23 +156,23 @@ CBlockTemplate* CreateNewBlock(const CChainParams& chainparams, const CScript& s
 
         bool fPriorityBlock = nBlockPrioritySize > 0;
         if (fPriorityBlock) {
-            vecPriority.reserve(mempool.mapTx.size());
-            for (CTxMemPool::indexed_transaction_set::iterator mi = mempool.mapTx.begin();
-                 mi != mempool.mapTx.end(); ++mi)
+            vecPriority.reserve(mPool.mapTx.size());
+            for (CTxMemPool::indexed_transaction_set::iterator mi = mPool.mapTx.begin();
+                 mi != mPool.mapTx.end(); ++mi)
             {
                 double dPriority = mi->GetPriority(nHeight);
                 CAmount dummy;
-                mempool.ApplyDeltas(mi->GetTx().GetHash(), dPriority, dummy);
+                mPool.ApplyDeltas(mi->GetTx().GetHash(), dPriority, dummy);
                 vecPriority.push_back(TxCoinAgePriority(dPriority, mi));
             }
             std::make_heap(vecPriority.begin(), vecPriority.end(), pricomparer);
         }
 
-        CTxMemPool::indexed_transaction_set::nth_index<3>::type::iterator mi = mempool.mapTx.get<3>().begin();
+        CTxMemPool::indexed_transaction_set::nth_index<3>::type::iterator mi = mPool.mapTx.get<3>().begin();
         CTxMemPool::txiter iter;
         uint32_t nMaxLegacySigops = MaxLegacySigops(pblock->nTime);
 
-        while (mi != mempool.mapTx.get<3>().end() || !clearedTxs.empty())
+        while (mi != mPool.mapTx.get<3>().end() || !clearedTxs.empty())
         {
             bool priorityTx = false;
             if (fPriorityBlock && !vecPriority.empty()) { // add a tx from priority queue to fill the blockprioritysize
@@ -183,7 +183,7 @@ CBlockTemplate* CreateNewBlock(const CChainParams& chainparams, const CScript& s
                 vecPriority.pop_back();
             }
             else if (clearedTxs.empty()) { // add tx with next highest score
-                iter = mempool.mapTx.project<0>(mi);
+                iter = mPool.mapTx.project<0>(mi);
                 mi++;
             }
             else {  // try to add a previously postponed child tx
@@ -197,7 +197,7 @@ CBlockTemplate* CreateNewBlock(const CChainParams& chainparams, const CScript& s
             const CTransaction& tx = iter->GetTx();
 
             bool fOrphan = false;
-            BOOST_FOREACH(CTxMemPool::txiter parent, mempool.GetMemPoolParents(iter))
+            BOOST_FOREACH(CTxMemPool::txiter parent, mPool.GetMemPoolParents(iter))
             {
                 if (!inBlock.count(parent)) {
                     fOrphan = true;
@@ -259,7 +259,7 @@ CBlockTemplate* CreateNewBlock(const CChainParams& chainparams, const CScript& s
             {
                 double dPriority = iter->GetPriority(nHeight);
                 CAmount dummy;
-                mempool.ApplyDeltas(tx.GetHash(), dPriority, dummy);
+                mPool.ApplyDeltas(tx.GetHash(), dPriority, dummy);
                 LogPrintf("priority %.1f fee %s txid %s\n",
                           dPriority , CFeeRate(iter->GetModifiedFee(), nTxSize).ToString(), tx.GetHash().ToString());
             }
@@ -267,7 +267,7 @@ CBlockTemplate* CreateNewBlock(const CChainParams& chainparams, const CScript& s
             inBlock.insert(iter);
 
             // Add transactions that depend on this one to the priority queue
-            BOOST_FOREACH(CTxMemPool::txiter child, mempool.GetMemPoolChildren(iter))
+            BOOST_FOREACH(CTxMemPool::txiter child, mPool.GetMemPoolChildren(iter))
             {
                 if (fPriorityBlock) {
                     waitPriIter wpiter = waitPriMap.find(child);
@@ -431,7 +431,7 @@ void static BitcoinMiner(const CChainParams& chainparams)
             unsigned int nTransactionsUpdatedLast = mempool.GetTransactionsUpdated();
             CBlockIndex* pindexPrev = chainActive.Tip();
 
-            auto_ptr<CBlockTemplate> pblocktemplate(CreateNewBlock(chainparams, coinbaseScript->reserveScript));
+            auto_ptr<CBlockTemplate> pblocktemplate(CreateNewBlock(chainparams, coinbaseScript->reserveScript, mempool));
             if (!pblocktemplate.get())
             {
                 LogPrintf("Error in BitcoinMiner: Keypool ran out, please call keypoolrefill before restarting the mining thread\n");

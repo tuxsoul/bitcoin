@@ -147,6 +147,8 @@ public:
 
     //! (memory only) Sequential id assigned to distinguish order in which blocks are received.
     uint32_t nSequenceId;
+    //! (memory only) The time this node first heard about this block
+    int64_t firstSeenTime;
 
     void SetNull()
     {
@@ -162,6 +164,7 @@ public:
         nChainTx = 0;
         nStatus = 0;
         nSequenceId = 0;
+        firstSeenTime = 0;
 
         nVersion       = 0;
         hashMerkleRoot = uint256();
@@ -175,7 +178,7 @@ public:
         SetNull();
     }
 
-    CBlockIndex(const CBlockHeader& block)
+    CBlockIndex(const CBlockHeader& block, int64_t _firstSeenTime)
     {
         SetNull();
 
@@ -184,6 +187,7 @@ public:
         nTime          = block.nTime;
         nBits          = block.nBits;
         nNonce         = block.nNonce;
+        firstSeenTime  = _firstSeenTime;
     }
 
     CDiskBlockPos GetBlockPos() const {
@@ -225,6 +229,10 @@ public:
     int64_t GetBlockTime() const
     {
         return (int64_t)nTime;
+    }
+    int64_t GetFirstSeenTime() const
+    {
+        return firstSeenTime;
     }
 
     enum { nMedianTimeSpan=11 };
